@@ -59,7 +59,8 @@ void TriggerBot()
 
 	if (CrosshairInfo != 0 && CrosshairInfo < 64)
 	{
-		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwEntityList + (CrosshairInfo - 1) * 0x10);
+		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwEntityList +
+										 (CrosshairInfo - 1) * 0x10);
 
 		if (Entity != NULL)
 		{

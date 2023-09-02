@@ -18,7 +18,6 @@
 #include "HackList.h"
 
 
-
 struct GameHack
 {
 public:
