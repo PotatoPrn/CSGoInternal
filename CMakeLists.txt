@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
-project(IntTemplate)
+project(CsgoInternal)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -10,4 +10,6 @@ add_library(${PROJECT_NAME} SHARED main.cpp
         src/MemUtils.cpp
         src/UiUtils.cpp
         src/HookUtil.cpp
-        include/HookUtil.h)
+        src/HackList.cpp
+        src/HelperUtils.cpp
+)

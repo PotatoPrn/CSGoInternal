@@ -13,6 +13,7 @@
 #include "MemUtils.h"
 #include "UiUtils.h"
 #include "HookUtil.h"
+#include "HackList.h"
 
 // Offsets
 #include "Offsets.h"
@@ -20,18 +21,25 @@
 struct GameHack
 {
 public:
-	const char* ModuleName;
-	uintptr_t ModuleBase;
-	PlayerEntity* PlayerObject;
+	const char* ClientName;
+	const char* EngineName;
+	uintptr_t ClientBase;
+	uintptr_t EngineBase;
+	PlayerObject* PlayerEntity;
+
 };
+
+extern GameHack HackClass;
 
 // Enabled Hacks Class, Ensure They are at false...
 struct EnabledHacks
 {
 public:
-
+	bool T_BHop = false;
 
 };
+
+extern EnabledHacks THacks;
 
 void InitHack(HMODULE hModule);
 

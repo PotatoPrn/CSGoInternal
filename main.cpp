@@ -1,5 +1,9 @@
 #include "main.h"
 
+
+GameHack HackClass;
+EnabledHacks THacks;
+
 // DLL Init Routine
 void InitHack(HMODULE hModule)
 {
@@ -10,16 +14,22 @@ void InitHack(HMODULE hModule)
 	freopen_s(&fHandle, "CONOUT$", "w", stdout);
 
 	// Setup Class Variables
-	GameHack HackClass;
-	HackClass.ModuleName = "";
-	HackClass.ModuleBase = (uintptr_t)GetModuleHandleA(HackClass.ModuleName);
+
+	HackClass.ClientName = "client.dll";
+	HackClass.ClientBase = (uintptr_t)GetModuleHandle(HackClass.ClientName);
+
+	HackClass.EngineName = "engine.dll";
+	HackClass.EngineBase = (uintptr_t)GetModuleHandle(HackClass.EngineName);
+
+
+	// Setup Player Entity
+	HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + PresetOffset::dwLocalPlayer);
 
 	// Setup Console
 	UI::ClearConsole();
 	UI::SetupConsole();
 
 	// Setup Graphics Hooking Class...
-	HookInfo MainHook;
 
 	// Call HackThread
 	HackThread(HackClass);
@@ -52,21 +62,30 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 // Main HackThread
 void HackThread(GameHack HackClass)
 {
-	// Enter PlayerObject Offset Here
-	HackClass.PlayerObject = *(PlayerEntity**)(HackClass.ModuleBase + 0);
-
-	if (HackClass.PlayerObject)
+	while (true)
 	{
-		while (true)
+		// Setup Detach Hotkey
+		if (GetAsyncKeyState(VK_DELETE) & 1)
 		{
-			// Setup Detach Hotkey
-			if (GetAsyncKeyState(VK_DELETE) & 1)
-			{
-				break;
-			}
-			Sleep(1);
+			break;
 		}
-		// Return and Kill Console
-		return;
+
+		if (GetAsyncKeyState(VK_F9) & 1)
+		{
+			THacks.T_BHop = !THacks.T_BHop;
+		}
+
+		if (GetAsyncKeyState(VK_SPACE) && THacks.T_BHop)
+		{
+			BHop_Hack();
+		}
+
+		std::cout << "[F9] Bhop Hack > " << THacks.T_BHop << std::endl;
+
+		Sleep(10);
+
+		UI::ClearConsole();
 	}
+	// Return and Kill Console
+	return;
 }
