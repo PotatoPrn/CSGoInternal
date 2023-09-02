@@ -8,6 +8,8 @@
 // Windows Headers
 #include <Windows.h>
 
+// Offsets
+#include "Offsets.h"
 
 // Local Headers
 #include "MemUtils.h"
@@ -15,8 +17,7 @@
 #include "HookUtil.h"
 #include "HackList.h"
 
-// Offsets
-#include "Offsets.h"
+
 
 struct GameHack
 {
@@ -36,6 +37,9 @@ struct EnabledHacks
 {
 public:
 	bool T_BHop = false;
+	bool T_Glow = false;
+	bool T_TrigBot = false;
+	bool T_TrigBot2 = false;
 
 };
 

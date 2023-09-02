@@ -190,8 +190,14 @@ class PlayerObject
 public:
 	union
 	{
-		DEFINE_MEMBER_N(int, m_fFlag, PresetOffset::m_fFlags);
-		DEFINE_MEMBER_N(Vec3, m_vecvelocity, PresetOffset::m_vecVelocity);
+		DEFINE_MEMBER_N(int, m_iTeam, PresetOffset::m_iTeamNum); //f4
+		DEFINE_MEMBER_N(int, m_iHealth, PresetOffset::m_iHealth); // 100
+		DEFINE_MEMBER_N(int, m_fFlag, PresetOffset::m_fFlags); // 104
+		DEFINE_MEMBER_N(Vec3, m_Vecorigin, PresetOffset::m_vecOrigin); // 138
+		DEFINE_MEMBER_N(Vec3, m_vecvelocity, PresetOffset::m_vecVelocity); // 114
+		DEFINE_MEMBER_N(int, m_CrosshairID, PresetOffset::m_iCrosshairId); // 0x11838
+
+
 	};
 };
 

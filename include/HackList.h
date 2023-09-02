@@ -10,5 +10,8 @@
 
 void BHop_Hack();
 
+void Glow_Hack();
+
+void TriggerBot();
 
 #endif //CSGOINTERNAL_HACKLIST_H

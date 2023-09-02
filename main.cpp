@@ -1,8 +1,14 @@
 #include "main.h"
 
-
+// Declared Structs
 GameHack HackClass;
 EnabledHacks THacks;
+ClrRenderStruct EnemyTeamColor;
+ClrRenderStruct AllyTeamColor;
+
+// Key State Definitions
+#define KEYDOWN -32768
+#define KEYUP 0
 
 // DLL Init Routine
 void InitHack(HMODULE hModule)
@@ -35,6 +41,7 @@ void InitHack(HMODULE hModule)
 	HackThread(HackClass);
 
 	// Eject DLL
+	// May need a cleanup thread here...
 	fclose(fHandle);
 	FreeConsole();
 	FreeLibraryAndExitThread(hModule, 0);
@@ -64,23 +71,67 @@ void HackThread(GameHack HackClass)
 {
 	while (true)
 	{
-		// Setup Detach Hotkey
+		/// DLL Detach Hotkey
 		if (GetAsyncKeyState(VK_DELETE) & 1)
 		{
 			break;
 		}
 
+		/// BHop Related Hack Toggle
 		if (GetAsyncKeyState(VK_F9) & 1)
 		{
 			THacks.T_BHop = !THacks.T_BHop;
 		}
 
+
+		/// Glow Hack Toggle
+		if (GetAsyncKeyState(VK_F8) & 1)
+		{
+			GlowUtils::ModifyBrightness();
+			THacks.T_Glow = !THacks.T_Glow;
+		}
+
+
+		if (GetAsyncKeyState(VK_F10) & 1)
+		{
+			THacks.T_TrigBot = !THacks.T_TrigBot;
+		}
+
+		if (GetAsyncKeyState(VK_SHIFT) == KEYDOWN && !THacks.T_TrigBot2)
+		{
+			THacks.T_TrigBot = true;
+			THacks.T_TrigBot2 = true;
+		}
+
+		if (GetAsyncKeyState(VK_SHIFT) == KEYUP && THacks.T_TrigBot2)
+		{
+			THacks.T_TrigBot = false;
+			THacks.T_TrigBot2 = false;
+		}
+
+		if (THacks.T_TrigBot)
+		{
+			TriggerBot();
+		}
+
+		/// Hack Execution Loop
 		if (GetAsyncKeyState(VK_SPACE) && THacks.T_BHop)
 		{
 			BHop_Hack();
 		}
 
+		if (THacks.T_Glow)
+		{
+			Glow_Hack();
+		}
+
+
+
+
+		// Toggled Hacks Cout
+		std::cout << "[F8] Glow Hack > " << THacks.T_Glow << std::endl;
 		std::cout << "[F9] Bhop Hack > " << THacks.T_BHop << std::endl;
+		std::cout << "[F10] / [Shift] Triggerbot Hack > " << THacks.T_TrigBot << std::endl;
 
 		Sleep(10);
 
