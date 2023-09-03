@@ -6,10 +6,24 @@ set(CMAKE_CXX_STANDARD 20)
 set(LIBRARY_OUTPUT_PATH "../")
 include_directories(include)
 
+include_directories(Ext/imgui)
+
 add_library(${PROJECT_NAME} SHARED main.cpp
         src/MemUtils.cpp
         src/UiUtils.cpp
         src/HookUtil.cpp
         src/HackList.cpp
         src/HelperUtils.cpp
+        include/SDKFunctions.h
+        src/GuiLib.cpp
+
+
+        Ext/imgui/imgui.cpp
+        Ext/imgui/imgui_draw.cpp
+        Ext/imgui/imgui_tables.cpp
+        Ext/imgui/imgui_widgets.cpp
+        src/OffsetHunter.cpp
+
 )
+
+

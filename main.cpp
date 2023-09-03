@@ -1,10 +1,12 @@
 #include "main.h"
 
+
 // Declared Structs
 GameHack HackClass;
 EnabledHacks THacks;
 ClrRenderStruct EnemyTeamColor;
 ClrRenderStruct AllyTeamColor;
+OffsetValues OffsetV;
 
 // Key State Definitions
 #define KEYDOWN -32768
@@ -27,6 +29,7 @@ void InitHack(HMODULE hModule)
 	HackClass.EngineName = "engine.dll";
 	HackClass.EngineBase = (uintptr_t)GetModuleHandle(HackClass.EngineName);
 
+	LocateOffsets();
 
 	// Setup Player Entity
 	HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + PresetOffset::dwLocalPlayer);
@@ -36,6 +39,7 @@ void InitHack(HMODULE hModule)
 	UI::SetupConsole();
 
 	// Setup Graphics Hooking Class...
+
 
 	// Call HackThread
 	HackThread(HackClass);
@@ -71,11 +75,20 @@ void HackThread(GameHack HackClass)
 {
 	while (true)
 	{
+
+
 		/// DLL Detach Hotkey
 		if (GetAsyncKeyState(VK_DELETE) & 1)
 		{
 			break;
 		}
+
+
+		// Using interface to retrieve the entity list
+		// Wouldnt use in an actual cheat as it's commonly used in the sdk...
+
+
+
 
 		/// BHop Related Hack Toggle
 		if (GetAsyncKeyState(VK_F9) & 1)
@@ -91,7 +104,7 @@ void HackThread(GameHack HackClass)
 			THacks.T_Glow = !THacks.T_Glow;
 		}
 
-
+		/// Triggerbot Hack Toggle
 		if (GetAsyncKeyState(VK_F10) & 1)
 		{
 			THacks.T_TrigBot = !THacks.T_TrigBot;
@@ -109,12 +122,24 @@ void HackThread(GameHack HackClass)
 			THacks.T_TrigBot2 = false;
 		}
 
+
+		/// Aimbot Hack Toggle
+		if (GetAsyncKeyState(VK_F7) & 1)
+		{
+			THacks.T_AimBot = !THacks.T_AimBot;
+		}
+
+
+
+
+
+		/// Hack Execution Loop
 		if (THacks.T_TrigBot)
 		{
 			TriggerBot();
 		}
 
-		/// Hack Execution Loop
+
 		if (GetAsyncKeyState(VK_SPACE) && THacks.T_BHop)
 		{
 			BHop_Hack();
@@ -129,6 +154,7 @@ void HackThread(GameHack HackClass)
 
 
 		// Toggled Hacks Cout
+		std::cout << "[F7] Aimbot Hack > " << THacks.T_BHop << std::endl;
 		std::cout << "[F8] Glow Hack > " << THacks.T_Glow << std::endl;
 		std::cout << "[F9] Bhop Hack > " << THacks.T_BHop << std::endl;
 		std::cout << "[F10] / [Shift] Triggerbot Hack > " << THacks.T_TrigBot << std::endl;

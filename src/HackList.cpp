@@ -64,18 +64,23 @@ void TriggerBot()
 
 		if (Entity != NULL)
 		{
-			int EntityHP = *(uintptr_t*)Entity + PresetOffset::m_iHealth;
+			int EntityHP = *(uintptr_t*)Entity + OffsetV.m_iHealth;
 			if (EntityHP > 0)
 			{
 				*(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwForceAttack) = 6;
 
 				// Distance Vars
 				Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
-				Vec3 EntPos = *(Vec3*)(Entity + PresetOffset::m_vecOrigin);
+				Vec3 EntPos = *(Vec3*)(Entity + OffsetV.m_vecOrigin);
 				Sleep(FPSUtils::DistanceDif(EntPos, PlayerPos) * 0.333);
 			}
 		}
 	}
 }
 
+
+void Aimbot()
+{
+
+}
 #endif //CSGOINTERNAL_HACKLIST_CPP

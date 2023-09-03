@@ -10,12 +10,16 @@
 
 // Offsets
 #include "Offsets.h"
+#include "OffsetHunter.h"
 
 // Local Headers
 #include "MemUtils.h"
 #include "UiUtils.h"
 #include "HookUtil.h"
 #include "HackList.h"
+
+
+// Sdk Stuff
 
 
 struct GameHack
@@ -39,7 +43,7 @@ public:
 	bool T_Glow = false;
 	bool T_TrigBot = false;
 	bool T_TrigBot2 = false;
-
+	bool T_AimBot = false;
 };
 
 extern EnabledHacks THacks;
