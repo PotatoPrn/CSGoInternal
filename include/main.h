@@ -15,7 +15,6 @@
 // Local Headers
 #include "MemUtils.h"
 #include "UiUtils.h"
-#include "HookUtil.h"
 #include "HackList.h"
 
 
@@ -50,7 +49,7 @@ extern EnabledHacks THacks;
 
 void InitHack(HMODULE hModule);
 
-void HackThread(GameHack HackClass);
+void HackThread();
 
 
 #endif //INTTEMPLATE_MAIN_H
