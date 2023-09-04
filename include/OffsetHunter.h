@@ -13,6 +13,8 @@ struct OffsetValues
 	uintptr_t m_vecVelocity;
 	uintptr_t m_vecViewOffset;
 
+	uintptr_t* m_Forcejump;
+
 };
 
 extern OffsetValues OffsetV;
