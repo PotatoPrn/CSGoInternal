@@ -14,7 +14,7 @@ void BHop_Hack()
 
 		if (JumpState & FL_ONGROUND)
 		{
-			*(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwForceJump) = 6;
+			*(OffsetV.m_Forcejump) = 6;
 		}
 	}
 
@@ -33,7 +33,7 @@ void Glow_Hack()
 
 		if (EntityObject != NULL)
 		{
-			int EntityTeam = *(uintptr_t*)(EntityObject + PresetOffset::m_iTeamNum);
+			int EntityTeam = *(uintptr_t*)(EntityObject + OffsetV.m_iTeamNum);
 			int GlowIndex = *(uintptr_t*)(EntityObject + PresetOffset::m_iGlowIndex);
 
 			if (EntityTeam == PlayerTeam)
