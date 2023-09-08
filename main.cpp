@@ -7,50 +7,68 @@ EnabledHacks THacks;
 ClrRenderStruct EnemyTeamColor;
 ClrRenderStruct AllyTeamColor;
 OffsetValues OffsetV;
+LPDIRECT3DDEVICE9 pDevice = nullptr;
 
-// Key State Definitions
-#define KEYDOWN -32768
-#define KEYUP 0
+
+
+// Global Data
+void* D3D9Device[119]; // Direct X Dummy Vtable
+BYTE EndSceneBytes[7] { 0 }; // Byte storage to store the original bytes
+tEndScene oEndScene = nullptr;
+
+
+
+// Hook Function
+void APIENTRY hkEndScene(LPDIRECT3DDEVICE9 o_pDevice)
+{
+	if (!pDevice)
+	{
+		pDevice = o_pDevice;
+	}
+
+	HackThread();
+
+	// Not loading >_>
+
+	oEndScene(pDevice); // Not Drawing?
+}
+
 
 // DLL Init Routine
 void InitHack(HMODULE hModule)
 {
 
 	// Setup Output Console
+
 	AllocConsole();
 	FILE* fHandle;
 	freopen_s(&fHandle, "CONOUT$", "w", stdout);
 
-	// Setup Class Variables
-
-	HackClass.ClientName = "client.dll";
-	HackClass.ClientBase = (uintptr_t)GetModuleHandle(HackClass.ClientName);
-
-	HackClass.EngineName = "engine.dll";
-	HackClass.EngineBase = (uintptr_t)GetModuleHandle(HackClass.EngineName);
-
-	LocateOffsets();
-
-
-	// Setup Player Entity
-	do
-	{
-		HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + PresetOffset::dwLocalPlayer);
-	} while (HackClass.PlayerEntity == NULL);
-
-	// Setup Console
-	UI::ClearConsole();
-	UI::SetupConsole();
 
 	// Setup Graphics Hooking Class...
+	if (InitD3D9(D3D9Device, sizeof(D3D9Device)))
+	{
+		memcpy(EndSceneBytes, (char*)D3D9Device[42], 7);
 
+		SetupThread();
+
+		oEndScene = (tEndScene)Hook::TrampHook((char*)D3D9Device[42],(char*)hkEndScene,   7);
+	}
+
+
+	// Patch Original Bytes when quitting
+	while (!GetAsyncKeyState(VK_DELETE))
+	{
+		Sleep(1);
+	}
+
+	Hook::Patch((BYTE*)D3D9Device[42], EndSceneBytes, 7);
 
 	// Call HackThread
-	HackThread();
+	//HackThread();
 
 
 	// Eject DLL
-	// May need a cleanup thread here...
 	fclose(fHandle);
 	FreeConsole();
 	FreeLibraryAndExitThread(hModule, 0);
@@ -75,94 +93,29 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 }
 
 
-// Main HackThread
-void HackThread()
+void SetupThread()
 {
-	while (true)
+	do
 	{
-
-		/// DLL Detach Hotkey
-		if (GetAsyncKeyState(VK_DELETE) & 1)
-		{
-			break;
-		}
+		HackClass.ClientName = "client.dll";
+		HackClass.ClientBase = (uintptr_t)GetModuleHandle(HackClass.ClientName);
+	} while (HackClass.ClientBase == NULL);
 
 
-		/// Aimbot Hack Toggle
-		if (GetAsyncKeyState(VK_F7) & 1)
-		{
-			THacks.T_AimBot = !THacks.T_AimBot;
-		}
-
-		/// Glow Hack Toggle
-		if (GetAsyncKeyState(VK_F8) & 1)
-		{
-			GlowUtils::ModifyBrightness();
-			THacks.T_Glow = !THacks.T_Glow;
-		}
-
-		/// BHop Related Hack Toggle
-		if (GetAsyncKeyState(VK_F9) & 1)
-		{
-			THacks.T_BHop = !THacks.T_BHop;
-		}
+	do
+	{
+		HackClass.EngineName = "engine.dll";
+		HackClass.EngineBase = (uintptr_t)GetModuleHandle(HackClass.EngineName);
+	} while (HackClass.EngineBase == NULL);
 
 
-		/// Triggerbot Hack Toggle
-		if (GetAsyncKeyState(VK_F10) & 1)
-		{
-			THacks.T_TrigBot = !THacks.T_TrigBot;
-		}
-
-		if (GetAsyncKeyState(VK_SHIFT) == KEYDOWN && !THacks.T_TrigBot2)
-		{
-			THacks.T_TrigBot = true;
-			THacks.T_TrigBot2 = true;
-		}
-
-		if (GetAsyncKeyState(VK_SHIFT) == KEYUP && THacks.T_TrigBot2)
-		{
-			THacks.T_TrigBot = false;
-			THacks.T_TrigBot2 = false;
-		}
+	LocateOffsets();
 
 
+	// Setup Console
+	UI::ClearConsole();
+	UI::SetupConsole();
 
-
-
-
-
-
-		/// Hack Execution Loop
-		if (THacks.T_TrigBot)
-		{
-			TriggerBot();
-		}
-
-
-		if (GetAsyncKeyState(VK_SPACE) && THacks.T_BHop)
-		{
-			BHop_Hack();
-		}
-
-		if (THacks.T_Glow)
-		{
-			Glow_Hack();
-		}
-
-
-
-
-		// Toggled Hacks Cout
-		std::cout << "[F7] Aimbot Hack > " << THacks.T_AimBot << std::endl;
-		std::cout << "[F8] Glow Hack > " << THacks.T_Glow << std::endl;
-		std::cout << "[F9] Bhop Hack > " << THacks.T_BHop << std::endl;
-		std::cout << "[F10] / [Shift] Triggerbot Hack > " << THacks.T_TrigBot << std::endl;
-
-		Sleep(10);
-
-		UI::ClearConsole();
-	}
-	// Return and Kill Console
-	return;
+	// Setup Player Object Entity;
+	HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + PresetOffset::dwLocalPlayer);
 }

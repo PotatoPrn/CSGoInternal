@@ -1,16 +1,16 @@
 #include "UiUtils.h"
 
 
-void UI::ClearConsole()
+bool UI::ClearConsole()
 {
 	COORD CursorPosition;
 	CursorPosition.X = 0;
 	CursorPosition.Y = 0;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), CursorPosition);
-	return;
+	return true;
 }
 
-void UI::SetupConsole()
+bool UI::SetupConsole()
 {
 	// Wipe Screen Fully
 	std::cout.clear();
@@ -38,5 +38,5 @@ void UI::SetupConsole()
 	GetConsoleCursorInfo(StdHandle, &CursorInfo);
 	CursorInfo.bVisible = false;
 	SetConsoleCursorInfo(StdHandle, &CursorInfo);
-	return;
+	return true;
 }

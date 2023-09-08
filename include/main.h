@@ -5,6 +5,15 @@
 #include <iostream>
 #include <vector>
 
+// Graphics Library
+#include <d3d9.h>
+#include <d3dx9.h>
+
+#pragma comment(lib, "d3d9.lib")
+#pragma comment(lib, "d3dx9.lib")
+
+extern LPDIRECT3DDEVICE9 pDevice;
+
 // Windows Headers
 #include <Windows.h>
 
@@ -16,6 +25,10 @@
 #include "MemUtils.h"
 #include "UiUtils.h"
 #include "HackList.h"
+#include "HookUtil.h"
+#include "DirectX.h"
+#include "Draw.h"
+#include "MainThread.h"
 
 
 // Sdk Stuff
@@ -49,7 +62,7 @@ extern EnabledHacks THacks;
 
 void InitHack(HMODULE hModule);
 
-void HackThread();
+void SetupThread();
 
 
 #endif //INTTEMPLATE_MAIN_H

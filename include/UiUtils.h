@@ -5,9 +5,9 @@
 
 namespace UI
 {
-	void ClearConsole();
+	bool ClearConsole();
 
-	void SetupConsole();
+	bool SetupConsole();
 }
 
 #endif //INTTEMPLATE_UIUTILS_H

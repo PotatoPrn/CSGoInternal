@@ -19,7 +19,7 @@ struct OffsetValues
 
 extern OffsetValues OffsetV;
 
-void LocateOffsets();
+bool LocateOffsets();
 
 
 
