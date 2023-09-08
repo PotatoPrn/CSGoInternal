@@ -65,11 +65,13 @@ bool InitD3D9(void** pTable, size_t Size)
 	//std::cout << WindowWidth << std::endl << WindowLength << std::endl;
 
 	// Create Device Class with the information retrieved previously
-	HRESULT DummyDevCreated = PD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
+	HRESULT DummyDevCreated = PD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow,
+			D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
 	if (DummyDevCreated != S_OK)
 	{
 		d3dpp.Windowed = !d3dpp.Windowed;
-		HRESULT DummyDevCreated = PD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
+		HRESULT DummyDevCreated = PD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow,
+				D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
 
 		if (DummyDevCreated != S_OK)
 		{

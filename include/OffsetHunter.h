@@ -22,5 +22,4 @@ extern OffsetValues OffsetV;
 bool LocateOffsets();
 
 
-
 #endif //CSGOINTERNAL_OFFSETHUNTER_H

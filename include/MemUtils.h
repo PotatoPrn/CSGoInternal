@@ -18,6 +18,4 @@ namespace Mem
 }
 
 
-
-
 #endif //INTTEMPLATE_MEMUTILS_H

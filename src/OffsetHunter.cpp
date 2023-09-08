@@ -45,7 +45,9 @@ bool LocateOffsets()
 	 * https://www.unknowncheats.me/forum/counterstrike-global-offensive/247851-internal-pattern-scanning.html
 	 */
 
-	uintptr_t ForceJumpPtr = (uintptr_t)Mem::InternalScanModule("client.dll", "\x8B\x0D\xFF\xFF\xFF\xFF\x8B\xD6\x8B\xC1\x83\xCA\x02", "xx????xxxxxxx") + 0x02;
+	uintptr_t ForceJumpPtr =
+			(uintptr_t)Mem::InternalScanModule("client.dll", "\x8B\x0D\xFF\xFF\xFF\xFF\x8B\xD6\x8B\xC1\x83\xCA\x02",
+					"xx????xxxxxxx") + 0x02;
 	OffsetV.m_Forcejump = (uintptr_t*)*((uintptr_t*)ForceJumpPtr);
 
 	return true;

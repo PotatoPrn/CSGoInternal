@@ -1,7 +1,6 @@
 #include "MemUtils.h"
 
 
-
 uintptr_t Mem::FindDMAAddy(uintptr_t AddrPtr, std::vector<unsigned int> MultiLevelOffset)
 {
 	uintptr_t AddressValue = AddrPtr;
@@ -13,7 +12,6 @@ uintptr_t Mem::FindDMAAddy(uintptr_t AddrPtr, std::vector<unsigned int> MultiLev
 	}
 	return AddressValue;
 }
-
 
 
 char* Mem::PatternScanBasic(char* Base, size_t Size, char* Pattern, char* Mask)
@@ -43,7 +41,7 @@ char* Mem::PatternScanBasic(char* Base, size_t Size, char* Pattern, char* Mask)
 
 char* Mem::InternalScan(char* Begin, size_t Size, char* Pattern, char* Mask)
 {
-	char* Match{nullptr};
+	char* Match{ nullptr };
 
 	DWORD OldProc = 0;
 
@@ -71,7 +69,7 @@ char* Mem::InternalScan(char* Begin, size_t Size, char* Pattern, char* Mask)
 
 uintptr_t Mem::InternalScanModule(char* Module, char* Pattern, char* Mask)
 {
-	MODULEINFO moduleinfo = {0};
+	MODULEINFO moduleinfo = { 0 };
 	HMODULE hmodule;
 	hmodule = GetModuleHandle(Module);
 	if (GetModuleInformation(GetCurrentProcess(), hmodule, &moduleinfo, sizeof(MODULEINFO)) == 0)

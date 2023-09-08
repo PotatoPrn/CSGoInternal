@@ -13,5 +13,4 @@ namespace Hook
 }
 
 
-
 #endif //CSGOINTERNAL_HOOKUTIL_H

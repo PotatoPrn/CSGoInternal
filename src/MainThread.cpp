@@ -73,7 +73,7 @@ void HackThread()
 		Glow_Hack();
 	}
 
-	
+
 	// Toggled Hacks Cout
 	std::cout << "[F7] Aimbot Hack > " << THacks.T_AimBot << "\n";
 	std::cout << "[F8] Glow Hack > " << THacks.T_Glow << "\n";
