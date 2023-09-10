@@ -5,12 +5,20 @@
 
 #include <math.h>
 
+#define PI 3.14159265f
+
 /// FPS related helpers, mainly distance calc
 namespace FPSUtils
 {
 	bool IsPlayerMoving();
 
 	float DistanceDif(Vec3 Dst, Vec3 Src);
+
+	Vec3 NormaliseViewAngle(Vec3 Angle);
+
+	void CalculateAngle(Vec3 Angle);
+
+	Vec3 GetBonePos(uintptr_t Entity, int BoneID);
 }
 
 /// Glow Related Stuff

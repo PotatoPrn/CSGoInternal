@@ -4,7 +4,7 @@
 #include "main.h"
 #include <Windows.h>
 
-
+// turn it in a class...
 struct OffsetValues
 {
 	uintptr_t m_iHealth;

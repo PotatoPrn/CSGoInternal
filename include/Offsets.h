@@ -12,6 +12,21 @@
 struct Vec3
 {
 	float X, Y, Z;
+
+	Vec3 operator-(Vec3 d)
+	{
+		return { X - d.X, Y - d.Y, Z - d.Z };
+	}
+
+	Vec3 operator+(Vec3 d)
+	{
+		return { X + d.X, Y + d.Y, Z + d.Z };
+	}
+
+	Vec3 operator*(float d)
+	{
+		return { X * d, Y * d, Z * d };
+	}
 };
 
 
@@ -193,6 +208,7 @@ public:
 		DEFINE_MEMBER_N(int, m_iTeam, PresetOffset::m_iTeamNum); //f4
 		DEFINE_MEMBER_N(int, m_iHealth, PresetOffset::m_iHealth); // 100
 		DEFINE_MEMBER_N(int, m_fFlag, PresetOffset::m_fFlags); // 104
+		DEFINE_MEMBER_N(Vec3, m_VecViewOffset, PresetOffset::m_vecViewOffset);
 		DEFINE_MEMBER_N(Vec3, m_Vecorigin, PresetOffset::m_vecOrigin); // 138
 		DEFINE_MEMBER_N(Vec3, m_vecvelocity, PresetOffset::m_vecVelocity); // 114
 		DEFINE_MEMBER_N(int, m_CrosshairID, PresetOffset::m_iCrosshairId); // 0x11838

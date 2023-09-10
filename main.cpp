@@ -12,8 +12,8 @@ LPDIRECT3DDEVICE9 pDevice = nullptr;
 
 
 // Global Data
-void* D3D9Device[119]; // Direct X Dummy Vtable
-BYTE EndSceneBytes[7] { 0 }; // Byte storage to store the original bytes
+void* D3D9Device[119]; // Direct X Dummy Device Vtable Storage
+BYTE EndSceneBytes[7] { 0 }; // Byte storage to store the original bytes so i can repatch it with the original bytes to exit
 tEndScene oEndScene = nullptr;
 
 
@@ -28,9 +28,7 @@ void APIENTRY hkEndScene(LPDIRECT3DDEVICE9 o_pDevice)
 
 	HackThread();
 
-	// Not loading >_>
-
-	oEndScene(pDevice); // Not Drawing?
+	oEndScene(pDevice);
 }
 
 
@@ -45,28 +43,39 @@ void InitHack(HMODULE hModule)
 	freopen_s(&fHandle, "CONOUT$", "w", stdout);
 
 
-	// Setup Graphics Hooking Class...
+	// Setup Graphics Hooking function...
 	if (InitD3D9(D3D9Device, sizeof(D3D9Device)))
 	{
+		// Copy original bytes into storage buffer
 		memcpy(EndSceneBytes, (char*)D3D9Device[42], 7);
 
+		// Execute Setup Thread ie Offset Locating
 		SetupThread();
 
+		// Hook the main hack function
 		oEndScene = (tEndScene)Hook::TrampHook((char*)D3D9Device[42],(char*)hkEndScene,   7);
 	}
 
 
-	// Patch Original Bytes when quitting
+
 	while (!GetAsyncKeyState(VK_DELETE))
 	{
 		Sleep(1);
 	}
 
+	// The entire dll will crash if all functions are still enabled...
+	// Adding a temporary functon clean up
+	THacks.T_AimBot = false;
+	THacks.T_BHop = false;
+	THacks.T_TrigBot = false;
+	THacks.T_TrigBot2 = false;
+	THacks.T_Glow = false;
+
+
+	// Patch Original Bytes when so the dll can eject without the game crashing
 	Hook::Patch((BYTE*)D3D9Device[42], EndSceneBytes, 7);
 
-	// Call HackThread
-	//HackThread();
-
+	std::cout << "Ejecting" << std::endl;
 
 	// Eject DLL
 	fclose(fHandle);
@@ -108,14 +117,9 @@ void SetupThread()
 		HackClass.EngineBase = (uintptr_t)GetModuleHandle(HackClass.EngineName);
 	} while (HackClass.EngineBase == NULL);
 
-
 	LocateOffsets();
-
 
 	// Setup Console
 	UI::ClearConsole();
 	UI::SetupConsole();
-
-	// Setup Player Object Entity;
-	HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + PresetOffset::dwLocalPlayer);
 }

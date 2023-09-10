@@ -20,7 +20,7 @@ bool FPSUtils::IsPlayerMoving()
 	}
 }
 
-
+/// Distance Calculation from one target to another
 float FPSUtils::DistanceDif(Vec3 Dst, Vec3 Src)
 {
 	float Distance;
@@ -32,6 +32,80 @@ float FPSUtils::DistanceDif(Vec3 Dst, Vec3 Src)
 
 	return Distance;
 }
+
+/// Normalise the view angle so the user doesn't get banned
+Vec3 FPSUtils::NormaliseViewAngle(Vec3 Angle)
+{
+	if (Angle.X > 89)
+	{
+		Angle.X = 89;
+	}
+
+	if (Angle.X < -89)
+	{
+		Angle.X = -89;
+	}
+
+	if (Angle.Y > 180)
+	{
+		Angle.Y -= 360;
+	}
+
+	if (Angle.Y < -180)
+	{
+		Angle.Y += 360;
+	}
+
+	return Angle;
+}
+
+/// Get The bone Pos of an entity
+Vec3 FPSUtils::GetBonePos(uintptr_t Entity, int BoneID)
+{
+	uintptr_t BoneMatrix = *(uintptr_t*)(Entity + PresetOffset::m_dwBoneMatrix);
+	Vec3 BonePos;
+
+	BonePos.X = *(float*)(BoneMatrix + 0x30 * BoneID + 0x0c);
+	BonePos.Y = *(float*)(BoneMatrix + 0x30 * BoneID + 0x1c);
+	BonePos.Z = *(float*)(BoneMatrix + 0x30 * BoneID + 0x2c);
+
+	return BonePos;
+}
+
+/// Aimbot Hack Angle Calculation
+void FPSUtils::CalculateAngle(Vec3 Target)
+{
+
+	// Setup New View Angle Result
+	Vec3 NewViewAngle;
+
+	/// Grab the Player ViewAngle
+	uintptr_t ViewAngleAddress = Mem::FindDMAAddy(HackClass.EngineBase + PresetOffset::dwClientState, {PresetOffset::dwClientState_ViewAngles});
+	Vec3 ViewAngle = *(Vec3*)ViewAngleAddress;
+
+	/// Get PLayer Position
+	Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
+
+	Vec3 ViewOffset = HackClass.PlayerEntity->m_VecViewOffset;
+
+	Vec3 TruePlayerPos = (PlayerPos + ViewOffset);
+
+	// Calculate the vector difference
+	// Use it to get the Trig's Value (X = Distance Difference, Y = Horizontal Difference, Z = Height Difference)
+	Vec3 DeltaVec = {Target.X - TruePlayerPos.X, Target.Y - TruePlayerPos.Y, Target.Z - TruePlayerPos.Z};
+
+	float DeltaVecLen = sqrt(DeltaVec.X * DeltaVec.X + DeltaVec.Y * DeltaVec.Y + DeltaVec.Z * DeltaVec.Z);
+
+	NewViewAngle.X = asin(DeltaVec.Z / DeltaVecLen) * (180 / PI);
+	NewViewAngle.Y = atan2f(DeltaVec.Y, DeltaVec.X) * (180/PI);
+	NewViewAngle.Z = 0.0f;
+
+	// Write New View Value
+	*(Vec3*)ViewAngleAddress = FPSUtils::NormaliseViewAngle(NewViewAngle);
+	// X = Pitch, Y = Yaw... bruh
+
+}
+
 
 
 /// Glow Hack Helpers
@@ -79,6 +153,7 @@ void GlowUtils::SetEnemyGlow(uintptr_t Entity, int GlowIndex, uintptr_t GlowObje
 	*(GlowStruct*)(GlowObject + (GlowIndex * 0x38)) = TGlow;
 }
 
+/// Raise the brightness for glow hack
 void GlowUtils::ModifyBrightness()
 {
 	AllyTeamColor.Red = 0;
