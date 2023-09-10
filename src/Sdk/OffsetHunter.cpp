@@ -1,9 +1,9 @@
 #ifndef CSGOINTERNAL_OFFSETHUNTER_CPP
 #define CSGOINTERNAL_OFFSETHUNTER_CPP
 
-#include "OffsetHunter.h"
-#include "SDKFunctions.h"
-#include "MemUtils.h"
+#include "Sdk/OffsetHunter.h"
+#include "Sdk/SDKFunctions.h"
+#include "Utils/MemUtils.h"
 
 /*
  * /// Offset Hunting Example

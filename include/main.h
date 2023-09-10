@@ -18,16 +18,16 @@ extern LPDIRECT3DDEVICE9 pDevice;
 #include <Windows.h>
 
 // Offsets
-#include "Offsets.h"
-#include "OffsetHunter.h"
+#include "Sdk/Offsets.h"
+#include "Sdk/OffsetHunter.h"
 
 // Local Headers
-#include "MemUtils.h"
-#include "UiUtils.h"
+#include "Utils/MemUtils.h"
+#include "Utils/UiUtils.h"
 #include "HackList.h"
-#include "HookUtil.h"
-#include "DirectX.h"
-#include "Draw.h"
+#include "Utils/HookUtil.h"
+#include "DX9Utils/DirectX.h"
+#include "DX9Utils/Draw.h"
 #include "MainThread.h"
 
 

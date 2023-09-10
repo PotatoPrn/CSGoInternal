@@ -1,7 +1,7 @@
 #ifndef CSGOINTERNAL_HOOKUTIL_CPP
 #define CSGOINTERNAL_HOOKUTIL_CPP
 
-#include "HookUtil.h"
+#include "Utils/HookUtil.h"
 
 void Hook::Patch(BYTE* Dst, BYTE* Src, unsigned int Size)
 {

@@ -1,7 +1,7 @@
 #ifndef CSGOINTERNAL_DRAW_CPP
 #define CSGOINTERNAL_DRAW_CPP
 
-#include "Draw.h"
+#include "DX9Utils/Draw.h"
 
 
 void DrawFilledRect(int x, int y, int w, int h, D3DCOLOR color)

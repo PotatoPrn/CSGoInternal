@@ -1,7 +1,7 @@
 #ifndef CSGOINTERNAL_DIRECTX_CPP
 #define CSGOINTERNAL_DIRECTX_CPP
 
-#include "DirectX.h"
+#include "DX9Utils/DirectX.h"
 
 // This list of function is to setup Directx9, grab the vtable offset for endscene (42), and then hook it
 

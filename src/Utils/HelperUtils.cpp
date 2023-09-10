@@ -1,7 +1,7 @@
 #ifndef CSGOINTERNAL_HELPERUTILS_CPP
 #define CSGOINTERNAL_HELPERUTILS_CPP
 
-#include "HelperUtils.h"
+#include "Utils/HelperUtils.h"
 
 
 /// FPS Helpers

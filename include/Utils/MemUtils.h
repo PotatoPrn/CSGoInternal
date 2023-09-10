@@ -3,8 +3,8 @@
 
 #include "main.h"
 
-#include <windows.h>
-#include <psapi.h>
+#include <Windows.h>
+#include <Psapi.h>
 
 namespace Mem
 {
