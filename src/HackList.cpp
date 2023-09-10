@@ -2,6 +2,8 @@
 #define CSGOINTERNAL_HACKLIST_CPP
 
 #include "HackList.h"
+#include "Utils/HelperUtils.h"
+#include "main.h"
 
 #include <time.h>
 
@@ -113,14 +115,16 @@ void Aimbot()
 					Vec3 EntityPos = *(Vec3*)(Entity + OffsetV.m_vecOrigin);
 
 					// Add TraceRay Function here...
-
-					NewDistance = FPSUtils::DistanceDif(EntityPos, PlayerPos);
-
-					if (NewDistance < OldDistance)
+					if (TraceRayFunction(Entity))
 					{
-						OldDistance = NewDistance;
-						FPSUtils::CalculateAngle(FPSUtils::GetBonePos(Entity, 8));
-						// Get Head Pos
+						NewDistance = FPSUtils::DistanceDif(EntityPos, PlayerPos);
+
+						if (NewDistance < OldDistance)
+						{
+							OldDistance = NewDistance;
+							FPSUtils::CalculateAngle(FPSUtils::GetBonePos(Entity, 8));
+							// Get Head Pos
+						}
 					}
 				}
 			}
