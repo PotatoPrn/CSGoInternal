@@ -3,6 +3,8 @@
 
 #include "HackList.h"
 
+#include <time.h>
+
 
 void BHop_Hack()
 {
@@ -17,7 +19,6 @@ void BHop_Hack()
 			*(OffsetV.m_Forcejump) = 6;
 		}
 	}
-
 }
 
 
@@ -26,7 +27,7 @@ void Glow_Hack()
 	int PlayerTeam = HackClass.PlayerEntity->m_iTeam;
 	uintptr_t GlowObject = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwGlowObjectManager);
 
-
+	// 64 since the entity list for humanoids are below 64
 	for (unsigned int i = 0; i < 64; i++)
 	{
 		uintptr_t EntityObject = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwEntityList + i * 0x10);
@@ -55,6 +56,8 @@ void Glow_Hack()
 
 void TriggerBot()
 {
+
+	static size_t LastTime = 0;
 	int CrosshairInfo = HackClass.PlayerEntity->m_CrosshairID;
 
 	if (CrosshairInfo != 0 && CrosshairInfo < 64)
@@ -65,14 +68,15 @@ void TriggerBot()
 		if (Entity != NULL)
 		{
 			int EntityHP = *(uintptr_t*)Entity + OffsetV.m_iHealth;
-			if (EntityHP > 0)
+
+			// Great Thread Safety delay
+			// https://www.mpgh.net/forum/showthread.php?t=1047609
+			if (EntityHP > 0 && GetTickCount() > LastTime)
 			{
 				*(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwForceAttack) = 6;
-
-				// Distance Vars
 				Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
 				Vec3 EntPos = *(Vec3*)(Entity + OffsetV.m_vecOrigin);
-				Sleep(FPSUtils::DistanceDif(EntPos, PlayerPos) * 0.333);
+				LastTime = GetTickCount() + FPSUtils::DistanceDif(EntPos, PlayerPos) * 0.400;
 			}
 		}
 	}
@@ -81,7 +85,48 @@ void TriggerBot()
 
 void Aimbot()
 {
+	// Distance Vars
+	float OldDistance = FLT_MAX;
+	float NewDistance = 0;
 
+	for (unsigned int i = 0; i < 64; i++)
+	{
+		// Get Entity List
+		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwEntityList + i * 0x10);
+
+		if (Entity != NULL)
+		{
+			bool m_bDormant = *(bool*)(Entity + PresetOffset::m_bDormant);
+			int EntTeamVal = *(int*)(Entity + OffsetV.m_iTeamNum);
+
+			int TeamValue = HackClass.PlayerEntity->m_iTeam;
+
+			if (!m_bDormant && TeamValue != EntTeamVal)
+			{
+				// Grab Entity Health
+				int EntHealth = *(int*)(Entity + OffsetV.m_iHealth);
+
+				if (EntHealth > 0)
+				{
+					// Grab position...
+					Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
+					Vec3 EntityPos = *(Vec3*)(Entity + OffsetV.m_vecOrigin);
+
+					// Add TraceRay Function here...
+
+					NewDistance = FPSUtils::DistanceDif(EntityPos, PlayerPos);
+
+					if (NewDistance < OldDistance)
+					{
+						OldDistance = NewDistance;
+						FPSUtils::CalculateAngle(FPSUtils::GetBonePos(Entity, 8));
+						// Get Head Pos
+					}
+				}
+			}
+		}
+	}
 }
+
 
 #endif //CSGOINTERNAL_HACKLIST_CPP
