@@ -1,10 +1,9 @@
 #ifndef INTTEMPLATE_MEMUTILS_H
 #define INTTEMPLATE_MEMUTILS_H
 
-#include "main.h"
-
 #include <Windows.h>
 #include <Psapi.h>
+#include <vector>
 
 namespace Mem
 {

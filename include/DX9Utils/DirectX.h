@@ -2,6 +2,7 @@
 #define CSGOINTERNAL_DIRECTX_H
 
 #include "main.h"
+#include <Windows.h>
 
 typedef HRESULT(APIENTRY* tEndScene)(LPDIRECT3DDEVICE9 pDevice);
 

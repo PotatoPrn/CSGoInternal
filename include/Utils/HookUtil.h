@@ -1,7 +1,7 @@
 #ifndef CSGOINTERNAL_HOOKUTIL_H
 #define CSGOINTERNAL_HOOKUTIL_H
 
-#include "main.h"
+#include <Windows.h>
 
 namespace Hook
 {

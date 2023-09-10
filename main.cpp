@@ -8,7 +8,7 @@ ClrRenderStruct EnemyTeamColor;
 ClrRenderStruct AllyTeamColor;
 OffsetValues OffsetV;
 LPDIRECT3DDEVICE9 pDevice = nullptr;
-
+tTraceRay TraceRay;
 
 
 // Global Data

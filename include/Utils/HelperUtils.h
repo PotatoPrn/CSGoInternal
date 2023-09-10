@@ -1,9 +1,9 @@
 #ifndef CSGOINTERNAL_HELPERUTILS_H
 #define CSGOINTERNAL_HELPERUTILS_H
 
-#include "main.h"
 
-#include <math.h>
+#include "Sdk/Offsets.h"
+#include <Windows.h>
 
 #define PI 3.14159265f
 

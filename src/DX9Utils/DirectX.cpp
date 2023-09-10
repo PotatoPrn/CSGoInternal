@@ -3,6 +3,7 @@
 
 #include "DX9Utils/DirectX.h"
 
+
 // This list of function is to setup Directx9, grab the vtable offset for endscene (42), and then hook it
 
 int WindowWidth, WindowLength;

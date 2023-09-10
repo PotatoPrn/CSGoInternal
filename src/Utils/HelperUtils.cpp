@@ -1,14 +1,17 @@
 #ifndef CSGOINTERNAL_HELPERUTILS_CPP
 #define CSGOINTERNAL_HELPERUTILS_CPP
 
-#include "Utils/HelperUtils.h"
+#include <math.h>
 
+#include "main.h"
+#include "Utils/HelperUtils.h"
+#include "Utils/MemUtils.h"
 
 /// FPS Helpers
 bool FPSUtils::IsPlayerMoving()
 {
 	Vec3 PlayerAcceleration = HackClass.PlayerEntity->m_vecvelocity;
-	int TotalAcceleration = PlayerAcceleration.X + PlayerAcceleration.Y + PlayerAcceleration.Z;
+	int TotalAcceleration = PlayerAcceleration.x + PlayerAcceleration.y + PlayerAcceleration.z;
 
 	if (TotalAcceleration != 0)
 	{
@@ -26,9 +29,9 @@ float FPSUtils::DistanceDif(Vec3 Dst, Vec3 Src)
 	float Distance;
 
 	Distance = sqrtf(
-			pow(Dst.X - Src.X, 2) +
-			pow(Dst.Y - Src.Y, 2) +
-			pow(Dst.Z - Src.Z, 2));
+			pow(Dst.x - Src.x, 2) +
+			pow(Dst.y - Src.y, 2) +
+			pow(Dst.z - Src.z, 2));
 
 	return Distance;
 }
@@ -36,24 +39,24 @@ float FPSUtils::DistanceDif(Vec3 Dst, Vec3 Src)
 /// Normalise the view angle so the user doesn't get banned
 Vec3 FPSUtils::NormaliseViewAngle(Vec3 Angle)
 {
-	if (Angle.X > 89)
+	if (Angle.x > 89)
 	{
-		Angle.X = 89;
+		Angle.x = 89;
 	}
 
-	if (Angle.X < -89)
+	if (Angle.x < -89)
 	{
-		Angle.X = -89;
+		Angle.x = -89;
 	}
 
-	if (Angle.Y > 180)
+	if (Angle.y > 180)
 	{
-		Angle.Y -= 360;
+		Angle.y -= 360;
 	}
 
-	if (Angle.Y < -180)
+	if (Angle.y < -180)
 	{
-		Angle.Y += 360;
+		Angle.y += 360;
 	}
 
 	return Angle;
@@ -65,9 +68,9 @@ Vec3 FPSUtils::GetBonePos(uintptr_t Entity, int BoneID)
 	uintptr_t BoneMatrix = *(uintptr_t*)(Entity + PresetOffset::m_dwBoneMatrix);
 	Vec3 BonePos;
 
-	BonePos.X = *(float*)(BoneMatrix + 0x30 * BoneID + 0x0c);
-	BonePos.Y = *(float*)(BoneMatrix + 0x30 * BoneID + 0x1c);
-	BonePos.Z = *(float*)(BoneMatrix + 0x30 * BoneID + 0x2c);
+	BonePos.x = *(float*)(BoneMatrix + 0x30 * BoneID + 0x0c);
+	BonePos.y = *(float*)(BoneMatrix + 0x30 * BoneID + 0x1c);
+	BonePos.z = *(float*)(BoneMatrix + 0x30 * BoneID + 0x2c);
 
 	return BonePos;
 }
@@ -92,13 +95,13 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 
 	// Calculate the vector difference
 	// Use it to get the Trig's Value (X = Distance Difference, Y = Horizontal Difference, Z = Height Difference)
-	Vec3 DeltaVec = {Target.X - TruePlayerPos.X, Target.Y - TruePlayerPos.Y, Target.Z - TruePlayerPos.Z};
+	Vec3 DeltaVec = {Target.x - TruePlayerPos.x, Target.y - TruePlayerPos.y, Target.z - TruePlayerPos.z};
 
-	float DeltaVecLen = sqrt(DeltaVec.X * DeltaVec.X + DeltaVec.Y * DeltaVec.Y + DeltaVec.Z * DeltaVec.Z);
+	float DeltaVecLen = sqrt(DeltaVec.x * DeltaVec.x + DeltaVec.y * DeltaVec.y + DeltaVec.z * DeltaVec.z);
 
-	NewViewAngle.X = asin(DeltaVec.Z / DeltaVecLen) * (180 / PI);
-	NewViewAngle.Y = atan2f(DeltaVec.Y, DeltaVec.X) * (180/PI);
-	NewViewAngle.Z = 0.0f;
+	NewViewAngle.x = -asin(DeltaVec.z / DeltaVecLen) * (180 / PI);
+	NewViewAngle.y = atan2f(DeltaVec.y, DeltaVec.x) * (180/PI);
+	NewViewAngle.z = 0.0f;
 
 	// Write New View Value
 	*(Vec3*)ViewAngleAddress = FPSUtils::NormaliseViewAngle(NewViewAngle);

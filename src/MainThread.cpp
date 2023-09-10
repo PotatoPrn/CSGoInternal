@@ -2,6 +2,7 @@
 #define CSGOINTERNAL_MAINTHREAD_CPP
 
 #include "MainThread.h"
+#include "Utils/HelperUtils.h"
 
 void HackThread()
 {

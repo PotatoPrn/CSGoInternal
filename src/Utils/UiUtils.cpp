@@ -1,5 +1,7 @@
 #include "Utils/UiUtils.h"
 
+#include <Windows.h>
+#include <iostream>
 
 bool UI::ClearConsole()
 {

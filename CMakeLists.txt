@@ -16,6 +16,7 @@ set (Utils
         src/Utils/UiUtils.cpp
         src/Utils/HelperUtils.cpp
         src/Utils/HookUtil.cpp
+        src/TraceRayUtil.cpp
 )
 
 set (Imgui
@@ -33,6 +34,7 @@ set (D3D9Utils
 set (SDK
         include/Sdk/SDKFunctions.h
         src/Sdk/OffsetHunter.cpp
+        src/Sdk/SDKFunctions.cpp
 )
 
 

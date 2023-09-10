@@ -1,8 +1,8 @@
 #ifndef CSGOINTERNAL_OFFSETHUNTER_H
 #define CSGOINTERNAL_OFFSETHUNTER_H
 
-#include "main.h"
 #include <Windows.h>
+
 
 // turn it in a class...
 struct OffsetValues

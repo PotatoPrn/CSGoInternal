@@ -29,6 +29,8 @@ extern LPDIRECT3DDEVICE9 pDevice;
 #include "DX9Utils/DirectX.h"
 #include "DX9Utils/Draw.h"
 #include "MainThread.h"
+#include "TraceRayUtil.h"
+#include "Utils/HelperUtils.h"
 
 
 // Sdk Stuff
