@@ -41,14 +41,20 @@ intptr_t GetOffset(RecvTable* Table, const char* Tablename, const char* NetVarNa
 	return 0;
 }
 
-intptr_t GetNetVarOffset(const char* Tablename, const char* NetVarName, ClientClass* clientclass)
+intptr_t GetNetVarOffset(const char* Tablename, const char* NetVarName, ClientClass* clientclass, unsigned int Offset)
 {
 	// Search the client class for the netvar name, pretty much the getoffset wrapper...
 	for (auto Currnode = clientclass; Currnode; Currnode = Currnode->m_pNext)
 	{
 		if (!_stricmp(Tablename, Currnode->m_pRecvTable->m_pNetTableName))
 		{
-			return GetOffset(Currnode->m_pRecvTable, Tablename, NetVarName);
+			intptr_t OffsetVal = GetOffset(Currnode->m_pRecvTable, Tablename, NetVarName);
+
+			if (Offset)
+			{
+				return OffsetVal + Offset;
+			}
+			else return OffsetVal;
 		}
 	}
 	return 0;

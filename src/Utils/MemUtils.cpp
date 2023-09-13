@@ -1,4 +1,6 @@
 #include "Utils/MemUtils.h"
+#include <iostream>
+#include <sstream>
 
 
 uintptr_t Mem::FindDMAAddy(uintptr_t AddrPtr, std::vector<unsigned int> MultiLevelOffset)
@@ -67,7 +69,7 @@ char* Mem::InternalScan(char* Begin, size_t Size, char* Pattern, char* Mask)
 }
 
 
-uintptr_t Mem::InternalScanModule(char* Module, char* Pattern, char* Mask)
+uintptr_t* Mem::InternalScanModule(char* Module, char* Pattern, char* Mask, unsigned int Offset, unsigned int Extra)
 {
 	MODULEINFO moduleinfo = { 0 };
 	HMODULE hmodule;
@@ -79,7 +81,17 @@ uintptr_t Mem::InternalScanModule(char* Module, char* Pattern, char* Mask)
 
 	char* Match = Mem::InternalScan((char*)moduleinfo.lpBaseOfDll, moduleinfo.SizeOfImage, Pattern, Mask);
 
-	return (uintptr_t)Match;
+	uintptr_t MatchOffset = (uintptr_t)Match + Offset;
+
+	if (Extra > 0)
+	{
+		return *((uintptr_t**)MatchOffset) + Extra;
+	}
+	else
+	{
+		return *((uintptr_t**)MatchOffset);
+	}
+
 }
 
 // Add function which converts hex to thingo...

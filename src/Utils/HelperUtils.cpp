@@ -65,7 +65,7 @@ Vec3 FPSUtils::NormaliseViewAngle(Vec3 Angle)
 /// Get The bone Pos of an entity
 Vec3 FPSUtils::GetBonePos(uintptr_t Entity, int BoneID)
 {
-	uintptr_t BoneMatrix = *(uintptr_t*)(Entity + PresetOffset::m_dwBoneMatrix);
+	uintptr_t BoneMatrix = *(uintptr_t*)(Entity + OffsetV.m_dwBoneMatrix);
 	Vec3 BonePos;
 
 	BonePos.x = *(float*)(BoneMatrix + 0x30 * BoneID + 0x0c);
@@ -83,8 +83,9 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 	Vec3 NewViewAngle;
 
 	/// Grab the Player ViewAngle
-	uintptr_t ViewAngleAddress = Mem::FindDMAAddy(HackClass.EngineBase + PresetOffset::dwClientState, {PresetOffset::dwClientState_ViewAngles});
-	Vec3 ViewAngle = *(Vec3*)ViewAngleAddress;
+	// Alternative to using dmaaddy
+	uintptr_t ViewAngleAddress = *(uintptr_t*)OffsetV.dwClientState + OffsetV.dwClientState_ViewAngles;
+
 
 	/// Get PLayer Position
 	Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
@@ -133,7 +134,7 @@ void GlowUtils::SetEnemyGlow(uintptr_t Entity, int GlowIndex, uintptr_t GlowObje
 	GlowStruct TGlow;
 
 	TGlow = *(GlowStruct*)(GlowObject + (GlowIndex * 0x38));
-	bool DefusingStatus = *(uintptr_t*)(Entity + PresetOffset::m_bIsDefusing);
+	bool DefusingStatus = *(uintptr_t*)(Entity + OffsetV.m_bIsDefusing);
 
 	if (DefusingStatus)
 	{
@@ -143,7 +144,7 @@ void GlowUtils::SetEnemyGlow(uintptr_t Entity, int GlowIndex, uintptr_t GlowObje
 	}
 	else
 	{
-		int Health = *(uintptr_t*)(Entity + PresetOffset::m_iHealth);
+		int Health = *(uintptr_t*)(Entity + OffsetV.m_iHealth);
 		TGlow.Red = Health * -0.01 + 1;
 		TGlow.Green = Health * 0.01;
 		TGlow.Blue = 0.0f;
@@ -169,10 +170,10 @@ void GlowUtils::ModifyBrightness()
 
 	float Brightness = 5.0f;
 
-	int AmbientVal = *(uintptr_t*)(HackClass.EngineBase + PresetOffset::model_ambient_min);
+	int AmbientVal = *(int*)OffsetV.model_ambient_min;
 	int XorPointer = *(int*)&Brightness ^ AmbientVal;
 
-	*(uintptr_t*)(HackClass.EngineBase + PresetOffset::model_ambient_min) = XorPointer;
+	*OffsetV.model_ambient_min = XorPointer;
 }
 
 

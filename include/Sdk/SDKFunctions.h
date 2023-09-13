@@ -95,7 +95,7 @@ public:
 // https://guidedhacking.com/threads/how-to-find-dwgetallclasses-netvar-manager.14044/
 intptr_t GetOffset(RecvTable* Table, const char* Tablename, const char* NetVarName);
 
-intptr_t GetNetVarOffset(const char* Tablename, const char* NetVarName, ClientClass* clientclass);
+intptr_t GetNetVarOffset(const char* Tablename, const char* NetVarName, ClientClass* clientclass, unsigned int Offset);
 
 class IBaseClientDLL
 {

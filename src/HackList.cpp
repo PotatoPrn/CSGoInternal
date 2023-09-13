@@ -18,7 +18,7 @@ void BHop_Hack()
 
 		if (JumpState & FL_ONGROUND)
 		{
-			*(OffsetV.m_Forcejump) = 6;
+			*(OffsetV.dwForceJump) = 6;
 		}
 	}
 }
@@ -27,28 +27,28 @@ void BHop_Hack()
 void Glow_Hack()
 {
 	int PlayerTeam = HackClass.PlayerEntity->m_iTeam;
-	uintptr_t GlowObject = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwGlowObjectManager);
+	uintptr_t GlowObject = *(uintptr_t*)OffsetV.dwGlowObjectManager;
 
 	// 64 since the entity list for humanoids are below 64
 	for (unsigned int i = 0; i < 64; i++)
 	{
-		uintptr_t EntityObject = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwEntityList + i * 0x10);
+		uintptr_t EntityObject = *(uintptr_t*)(OffsetV.dwEntityList + i * 0x10);
 
 		if (EntityObject != NULL)
 		{
 			int EntityTeam = *(uintptr_t*)(EntityObject + OffsetV.m_iTeamNum);
-			int GlowIndex = *(uintptr_t*)(EntityObject + PresetOffset::m_iGlowIndex);
+			int GlowIndex = *(uintptr_t*)(EntityObject + OffsetV.m_iGlowIndex);
 
 			if (EntityTeam == PlayerTeam)
 			{
 				// Draw Player Team
 				GlowUtils::SetTeamGlow(GlowIndex, GlowObject);
-				*(ClrRenderStruct*)(EntityObject + PresetOffset::m_clrRender) = AllyTeamColor;
+				*(ClrRenderStruct*)(EntityObject + OffsetV.m_clrRender) = AllyTeamColor;
 			}
 			else
 			{
 				GlowUtils::SetEnemyGlow(EntityObject, GlowIndex, GlowObject);
-				*(ClrRenderStruct*)(EntityObject + PresetOffset::m_clrRender) = EnemyTeamColor;
+				*(ClrRenderStruct*)(EntityObject + OffsetV.m_clrRender) = EnemyTeamColor;
 				// Draw Enemy Team
 			}
 		}
@@ -64,7 +64,7 @@ void TriggerBot()
 
 	if (CrosshairInfo != 0 && CrosshairInfo < 64)
 	{
-		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwEntityList +
+		uintptr_t Entity = *(uintptr_t*)(OffsetV.dwEntityList +
 										 (CrosshairInfo - 1) * 0x10);
 
 		if (Entity != NULL)
@@ -94,11 +94,11 @@ void Aimbot()
 	for (unsigned int i = 0; i < 64; i++)
 	{
 		// Get Entity List
-		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwEntityList + i * 0x10);
+		uintptr_t Entity = *(uintptr_t*)(OffsetV.dwEntityList + i * 0x10);
 
 		if (Entity != NULL)
 		{
-			bool m_bDormant = *(bool*)(Entity + PresetOffset::m_bDormant);
+			bool m_bDormant = *(bool*)(Entity + OffsetV.m_bDormant);
 			int EntTeamVal = *(int*)(Entity + OffsetV.m_iTeamNum);
 
 			int TeamValue = HackClass.PlayerEntity->m_iTeam;
