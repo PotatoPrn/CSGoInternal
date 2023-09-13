@@ -43,7 +43,7 @@ public:
 	const char* EngineName;
 	uintptr_t ClientBase;
 	uintptr_t EngineBase;
-	PlayerObject* PlayerEntity;
+	uintptr_t PlayerEntity;
 
 };
 

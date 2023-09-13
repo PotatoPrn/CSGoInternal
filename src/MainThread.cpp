@@ -9,7 +9,8 @@
 void HackThread()
 {
 	// Setup Player Object Entity;
-	HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + OffsetV.dwLocalPlayer);
+	//HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + OffsetV.dwLocalPlayer);
+	HackClass.PlayerEntity = *(uintptr_t*)(HackClass.ClientBase + OffsetV.dwLocalPlayer);
 
 
 	/// Not needed as since we are hooking, we will need to have this repatch with the original bytes

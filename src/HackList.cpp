@@ -12,7 +12,7 @@ void BHop_Hack()
 {
 	if (FPSUtils::IsPlayerMoving())
 	{
-		int JumpState = HackClass.PlayerEntity->m_fFlag;
+		int JumpState = *(int*)(HackClass.PlayerEntity + OffsetV.m_fFlag);
 
 		static int FL_ONGROUND = 0b0000'0001; // Bitwise pattern for the player being on ground
 
@@ -26,7 +26,7 @@ void BHop_Hack()
 
 void Glow_Hack()
 {
-	int PlayerTeam = HackClass.PlayerEntity->m_iTeam;
+	int PlayerTeam = *(int*)(HackClass.PlayerEntity + OffsetV.m_iTeamNum);
 	uintptr_t GlowObject = *(uintptr_t*)(HackClass.ClientBase + OffsetV.dwGlowObjectManager);
 
 	// 64 since the entity list for humanoids are below 64
@@ -60,7 +60,7 @@ void TriggerBot()
 {
 
 	static size_t LastTime = 0;
-	int CrosshairInfo = HackClass.PlayerEntity->m_CrosshairID;
+	int CrosshairInfo = *(int*)(HackClass.PlayerEntity + OffsetV.m_iCrosshairId);
 
 	if (CrosshairInfo != 0 && CrosshairInfo < 64)
 	{
@@ -76,7 +76,7 @@ void TriggerBot()
 			if (EntityHP > 0 && GetTickCount() > LastTime)
 			{
 				*(uintptr_t*)(HackClass.ClientBase + OffsetV.dwForceAttack) = 6;
-				Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
+				Vec3 PlayerPos = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecOrigin);
 				Vec3 EntPos = *(Vec3*)(Entity + OffsetV.m_vecOrigin);
 				LastTime = GetTickCount() + FPSUtils::DistanceDif(EntPos, PlayerPos) * 0.400;
 			}
@@ -101,7 +101,7 @@ void Aimbot()
 			bool m_bDormant = *(bool*)(Entity + OffsetV.m_bDormant);
 			int EntTeamVal = *(int*)(Entity + OffsetV.m_iTeamNum);
 
-			int TeamValue = HackClass.PlayerEntity->m_iTeam;
+			int TeamValue = *(int*)(HackClass.PlayerEntity + OffsetV.m_iTeamNum);
 
 			if (!m_bDormant && TeamValue != EntTeamVal)
 			{
@@ -111,7 +111,7 @@ void Aimbot()
 				if (EntHealth > 0)
 				{
 					// Grab position...
-					Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
+					Vec3 PlayerPos = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecOrigin);
 					Vec3 EntityPos = *(Vec3*)(Entity + OffsetV.m_vecOrigin);
 
 					// Add TraceRay Function here...

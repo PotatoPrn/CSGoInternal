@@ -32,10 +32,20 @@ struct OffsetValues
 	uintptr_t dwEntityList;
 };
 
-
-
-
 extern OffsetValues OffsetV;
+
+class EntClass
+{
+public:
+	union
+	{
+
+	};
+};
+
+
+
+
 
 bool LocateOffsets();
 #endif //CSGOINTERNAL_OFFSETHUNTER_H

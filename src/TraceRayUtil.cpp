@@ -15,7 +15,7 @@ bool TraceRayFunction(uintptr_t Ent)
 	CTraceFilter TraceFilter;
 	TraceFilter.pSkip = (void*)HackClass.PlayerEntity;
 
-	Vec3 PlayerEyePos = HackClass.PlayerEntity->m_Vecorigin + HackClass.PlayerEntity->m_VecViewOffset;
+	Vec3 PlayerEyePos = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecOrigin) + *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecViewOffset);
 
 	Vec3 EntityPos = FPSUtils::GetBonePos(Ent, 8);
 

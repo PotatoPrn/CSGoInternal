@@ -10,7 +10,7 @@
 /// FPS Helpers
 bool FPSUtils::IsPlayerMoving()
 {
-	Vec3 PlayerAcceleration = HackClass.PlayerEntity->m_vecvelocity;
+	Vec3 PlayerAcceleration = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecVelocity);
 	int TotalAcceleration = PlayerAcceleration.x + PlayerAcceleration.y + PlayerAcceleration.z;
 
 	if (TotalAcceleration != 0)
@@ -88,9 +88,9 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 
 
 	/// Get PLayer Position
-	Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
+	Vec3 PlayerPos = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecOrigin);
 
-	Vec3 ViewOffset = HackClass.PlayerEntity->m_VecViewOffset;
+	Vec3 ViewOffset = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecViewOffset);
 
 	Vec3 TruePlayerPos = (PlayerPos + ViewOffset);
 
