@@ -18,7 +18,7 @@ void BHop_Hack()
 
 		if (JumpState & FL_ONGROUND)
 		{
-			*(OffsetV.dwForceJump) = 6;
+			*(int*)(HackClass.ClientBase + OffsetV.dwForceJump) = 6;
 		}
 	}
 }
@@ -27,12 +27,12 @@ void BHop_Hack()
 void Glow_Hack()
 {
 	int PlayerTeam = HackClass.PlayerEntity->m_iTeam;
-	uintptr_t GlowObject = *(uintptr_t*)OffsetV.dwGlowObjectManager;
+	uintptr_t GlowObject = *(uintptr_t*)(HackClass.ClientBase + OffsetV.dwGlowObjectManager);
 
 	// 64 since the entity list for humanoids are below 64
 	for (unsigned int i = 0; i < 64; i++)
 	{
-		uintptr_t EntityObject = *(uintptr_t*)(OffsetV.dwEntityList + i * 0x10);
+		uintptr_t EntityObject = *(uintptr_t*)(HackClass.ClientBase + OffsetV.dwEntityList + i * 0x10);
 
 		if (EntityObject != NULL)
 		{
@@ -64,7 +64,7 @@ void TriggerBot()
 
 	if (CrosshairInfo != 0 && CrosshairInfo < 64)
 	{
-		uintptr_t Entity = *(uintptr_t*)(OffsetV.dwEntityList +
+		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + OffsetV.dwEntityList +
 										 (CrosshairInfo - 1) * 0x10);
 
 		if (Entity != NULL)
@@ -75,7 +75,7 @@ void TriggerBot()
 			// https://www.mpgh.net/forum/showthread.php?t=1047609
 			if (EntityHP > 0 && GetTickCount() > LastTime)
 			{
-				*(uintptr_t*)(HackClass.ClientBase + PresetOffset::dwForceAttack) = 6;
+				*(uintptr_t*)(HackClass.ClientBase + OffsetV.dwForceAttack) = 6;
 				Vec3 PlayerPos = HackClass.PlayerEntity->m_Vecorigin;
 				Vec3 EntPos = *(Vec3*)(Entity + OffsetV.m_vecOrigin);
 				LastTime = GetTickCount() + FPSUtils::DistanceDif(EntPos, PlayerPos) * 0.400;
@@ -94,7 +94,7 @@ void Aimbot()
 	for (unsigned int i = 0; i < 64; i++)
 	{
 		// Get Entity List
-		uintptr_t Entity = *(uintptr_t*)(OffsetV.dwEntityList + i * 0x10);
+		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + OffsetV.dwEntityList + i * 0x10);
 
 		if (Entity != NULL)
 		{

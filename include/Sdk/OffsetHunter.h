@@ -20,11 +20,13 @@ struct OffsetValues
 	uintptr_t m_bIsDefusing;
 
 
-	uintptr_t* dwForceJump;
-	uintptr_t* model_ambient_min;
-	uintptr_t* dwClientState;
+	uintptr_t dwForceJump;
+	uintptr_t model_ambient_min;
+	uintptr_t dwClientState;
 	uintptr_t dwClientState_ViewAngles;
-	uintptr_t* dwGlowObjectManager;
+	uintptr_t dwGlowObjectManager;
+	uintptr_t dwLocalPlayer;
+	uintptr_t dwForceAttack;
 
 	uintptr_t m_bDormant;
 	uintptr_t dwEntityList;

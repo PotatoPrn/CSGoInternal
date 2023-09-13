@@ -69,8 +69,9 @@ char* Mem::InternalScan(char* Begin, size_t Size, char* Pattern, char* Mask)
 }
 
 
-uintptr_t* Mem::InternalScanModule(char* Module, char* Pattern, char* Mask, unsigned int Offset, unsigned int Extra)
+uintptr_t Mem::InternalScanModule(bool IsRelative, char* Module, char* Pattern, char* Mask, unsigned int Offset, unsigned int Extra)
 {
+	uintptr_t* AddressVal;
 	MODULEINFO moduleinfo = { 0 };
 	HMODULE hmodule;
 	hmodule = GetModuleHandle(Module);
@@ -85,12 +86,20 @@ uintptr_t* Mem::InternalScanModule(char* Module, char* Pattern, char* Mask, unsi
 
 	if (Extra > 0)
 	{
-		return *((uintptr_t**)MatchOffset) + Extra;
+		AddressVal = *((uintptr_t**)MatchOffset) + Extra;
 	}
 	else
 	{
-		return *((uintptr_t**)MatchOffset);
+		AddressVal = *((uintptr_t**)MatchOffset);
 	}
+
+	if (IsRelative)
+	{
+		uintptr_t ModuleAddress = (uintptr_t)GetModuleHandle(Module);
+		return ((uintptr_t)AddressVal - ModuleAddress);
+	}
+	else
+		return (uintptr_t)AddressVal;
 
 }
 

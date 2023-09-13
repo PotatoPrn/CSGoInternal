@@ -84,7 +84,7 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 
 	/// Grab the Player ViewAngle
 	// Alternative to using dmaaddy
-	uintptr_t ViewAngleAddress = *(uintptr_t*)OffsetV.dwClientState + OffsetV.dwClientState_ViewAngles;
+	uintptr_t ViewAngleAddress = *(uintptr_t*)(HackClass.EngineBase + OffsetV.dwClientState) + OffsetV.dwClientState_ViewAngles;
 
 
 	/// Get PLayer Position
@@ -170,10 +170,10 @@ void GlowUtils::ModifyBrightness()
 
 	float Brightness = 5.0f;
 
-	int AmbientVal = *(int*)OffsetV.model_ambient_min;
+	int AmbientVal = *(int*)(HackClass.EngineBase + OffsetV.model_ambient_min);
 	int XorPointer = *(int*)&Brightness ^ AmbientVal;
 
-	*OffsetV.model_ambient_min = XorPointer;
+	*(uintptr_t*)(HackClass.EngineBase + OffsetV.model_ambient_min) = XorPointer;
 }
 
 

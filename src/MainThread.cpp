@@ -9,9 +9,8 @@
 void HackThread()
 {
 	// Setup Player Object Entity;
-	HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + PresetOffset::dwLocalPlayer);
-	std::cout << OffsetV.dwGlowObjectManager << std::endl << std::hex << (uintptr_t*)(HackClass.ClientBase + PresetOffset::dwGlowObjectManager);
-	//std::cout << OffsetV.m_bDormant << std::endl;
+	HackClass.PlayerEntity = *(PlayerObject**)(HackClass.ClientBase + OffsetV.dwLocalPlayer);
+
 
 	/// Not needed as since we are hooking, we will need to have this repatch with the original bytes
 	/// DLL Detach Hotkey

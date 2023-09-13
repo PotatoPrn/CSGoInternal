@@ -61,15 +61,17 @@ bool LocateOffsets()
 	 */
 
 	/// Non Offset Address
-	OffsetV.dwForceJump = Mem::InternalScanModule("client.dll", "\x8B\x0D\xFF\xFF\xFF\xFF\x8B\xD6\x8B\xC1\x83\xCA\x02","xx????xxxxxxx", 0x02, 0x0);
-	OffsetV.model_ambient_min = Mem::InternalScanModule("engine.dll", "\xF3\x0F\x10\x0D\xFF\xFF\xFF\xFF\xF3\x0F\x11\x4C\x24\xFF\x8B\x44\x24\x20\x35\xFF\xFF\xFF\xFF\x89\x44\x24\x0C", "xxxx????xxxxx?xxxxx????xxxx" ,0x04, 0x0);
-	OffsetV.dwClientState = Mem::InternalScanModule("engine.dll", "\xA1\xFF\xFF\xFF\xFF\x6A\x00\x56\x8B\x88", "x????xxxxx", 0x01, 0x0);
-	OffsetV.dwClientState_ViewAngles = (uintptr_t)Mem::InternalScanModule("engine.dll", "\xF3\x0F\x11\x86\xFF\xFF\xFF\xFF\xF3\x0F\x10\x44\x24\xFF\xF3\x0F\x11\x86", "xxxx????xxxxx?xxxx", 0x04, 0x0);
-	OffsetV.dwGlowObjectManager = Mem::InternalScanModule("client.dll", "\xA1\xFF\xFF\xFF\xFF\xA8\x01\x75\x4B", "x????xxxx", 0x01, 0x01);
+	OffsetV.dwForceJump = Mem::InternalScanModule(true, "client.dll", "\x8B\x0D\xFF\xFF\xFF\xFF\x8B\xD6\x8B\xC1\x83\xCA\x02","xx????xxxxxxx", 0x02, 0x0);
+	OffsetV.model_ambient_min = Mem::InternalScanModule(true, "engine.dll", "\xF3\x0F\x10\x0D\xFF\xFF\xFF\xFF\xF3\x0F\x11\x4C\x24\xFF\x8B\x44\x24\x20\x35\xFF\xFF\xFF\xFF\x89\x44\x24\x0C", "xxxx????xxxxx?xxxxx????xxxx" ,0x04, 0x0);
+	OffsetV.dwClientState = Mem::InternalScanModule(true, "engine.dll", "\xA1\xFF\xFF\xFF\xFF\x6A\x00\x56\x8B\x88", "x????xxxxx", 0x01, 0x0);
+	OffsetV.dwClientState_ViewAngles = Mem::InternalScanModule(false, "engine.dll", "\xF3\x0F\x11\x86\xFF\xFF\xFF\xFF\xF3\x0F\x10\x44\x24\xFF\xF3\x0F\x11\x86", "xxxx????xxxxx?xxxx", 0x04, 0x0);
+	OffsetV.dwGlowObjectManager = Mem::InternalScanModule(true, "client.dll", "\xA1\xFF\xFF\xFF\xFF\xA8\x01\x75\x4B", "x????xxxx", 0x01, 0x01);
+	OffsetV.dwLocalPlayer = Mem::InternalScanModule(true, "client.dll", "\x8D\x34\x85\xFF\xFF\xFF\xFF\x89\x15\xFF\xFF\xFF\xFF\x8B\x41\x08\x8B\x48\x04\x83\x49\xFF", "xxx????xx????xxxxxxx", 0x03, 0x01);
+	OffsetV.dwForceAttack = Mem::InternalScanModule(true, "client.dll", "\x89\x0D\xFF\xFF\xFF\xFF\x8B\x0D\xFF\xFF\xFF\xFF\x8B\xF2\x8B\xC1\x83\xCE\x04", "xx????xx????xxxxxxx" ,0x02, 0x0);
 
 	/// Offsets
-	OffsetV.m_bDormant = (uintptr_t)Mem::InternalScanModule("client.dll", "\x8B\xF1\x88\x9E\xFF\xFF\xFF\xFF\xE8", "xxxx????x", 0x04, 0x00);
-	OffsetV.dwEntityList = (uintptr_t)Mem::InternalScanModule("client.dll", "\xBB\xFF\xFF\xFF\xFF\x83\xFF\x01\x0F\x8C\xFF\xFF\xFF\xFF\x3B\xF8", "x????xxxxx????xx", 0x01,0x0);
+	OffsetV.m_bDormant = Mem::InternalScanModule(false, "client.dll", "\x8B\xF1\x88\x9E\xFF\xFF\xFF\xFF\xE8", "xxxx????x", 0x04, 0x00);
+	OffsetV.dwEntityList = Mem::InternalScanModule(true, "client.dll", "\xBB\xFF\xFF\xFF\xFF\x83\xFF\x01\x0F\x8C\xFF\xFF\xFF\xFF\x3B\xF8", "x????xxxxx????xx", 0x01,0x0);
 
 	return true;
 

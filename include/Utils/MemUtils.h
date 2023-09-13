@@ -13,7 +13,7 @@ namespace Mem
 
 	char* InternalScan(char* Begin, size_t Size, char* Pattern, char* Mask);
 
-	uintptr_t* InternalScanModule(char* Module, char* Pattern, char* Mask, unsigned int Offset, unsigned int Extra);
+	uintptr_t InternalScanModule(bool IsRelative, char* Module, char* Pattern, char* Mask, unsigned int Offset, unsigned int Extra);
 }
 
 
