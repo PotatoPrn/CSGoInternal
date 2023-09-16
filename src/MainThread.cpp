@@ -85,7 +85,7 @@ void HackThread()
 
 		if (THacks.T_RCS)
 		{
-			//RCS();
+			RCS();
 		}
 
 		if (THacks.T_TrigBot)

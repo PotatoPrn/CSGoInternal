@@ -7,13 +7,45 @@
 #include "Utils/HelperUtils.h"
 #include "Utils/MemUtils.h"
 
-/// FPS Helpers
+/// Check if player is moving
 bool FPSUtils::IsPlayerMoving()
 {
 	Vec3 PlayerAcceleration = OH::CalcOffset<Vec3>(HackClass.PlayerEntity, OffsetV.m_vecVelocity);
 	int TotalAcceleration = PlayerAcceleration.x + PlayerAcceleration.y + PlayerAcceleration.z;
 
 	if (TotalAcceleration != 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/// Verify Entity is real
+bool FPSUtils::VerifyEntity(uintptr_t Entity)
+{
+	if (Entity == NULL)
+		return false;
+
+	if (OH::CalcOffset<int>(Entity, OffsetV.m_iHealth) == 0)
+		return false;
+
+	if (OH::CalcOffset<bool>(Entity, OffsetV.m_bDormant))
+		return false;
+
+	return true;
+}
+
+/// Compare Entity team against current player
+bool FPSUtils::SameTeamCheck(uintptr_t Entity)
+{
+	int EntityTeam = OH::CalcOffset<int>(Entity, OffsetV.m_iTeamNum);
+
+	int PlayerTeam = OH::CalcOffset<int>(HackClass.PlayerEntity, OffsetV.m_iTeamNum);
+
+	if (PlayerTeam == EntityTeam)
 	{
 		return true;
 	}
@@ -84,7 +116,8 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 
 	/// Grab the Player ViewAngle
 	// Alternative to using dmaaddy
-	uintptr_t ViewAngleAddress = OH::CalcOffset<uintptr_t>(HackClass.EngineBase, OffsetV.dwClientState) + OffsetV.dwClientState_ViewAngles;
+	uintptr_t ViewAngleAddress =
+			OH::CalcOffset<uintptr_t>(HackClass.EngineBase, OffsetV.dwClientState) + OffsetV.dwClientState_ViewAngles;
 
 
 	/// Get PLayer Position
@@ -96,12 +129,12 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 
 	// Calculate the vector difference
 	// Use it to get the Trig's Value (X = Distance Difference, Y = Horizontal Difference, Z = Height Difference)
-	Vec3 DeltaVec = {Target.x - TruePlayerPos.x, Target.y - TruePlayerPos.y, Target.z - TruePlayerPos.z};
+	Vec3 DeltaVec = { Target.x - TruePlayerPos.x, Target.y - TruePlayerPos.y, Target.z - TruePlayerPos.z };
 
 	float DeltaVecLen = sqrt(DeltaVec.x * DeltaVec.x + DeltaVec.y * DeltaVec.y + DeltaVec.z * DeltaVec.z);
 
 	NewViewAngle.x = -asin(DeltaVec.z / DeltaVecLen) * (180 / PI);
-	NewViewAngle.y = atan2f(DeltaVec.y, DeltaVec.x) * (180/PI);
+	NewViewAngle.y = atan2f(DeltaVec.y, DeltaVec.x) * (180 / PI);
 	NewViewAngle.z = 0.0f;
 
 	// Write New View Value
@@ -110,7 +143,7 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 }
 
 /// World to screen Calculation
-bool FPSUtils::World2Screen(float Matrix[16], Vec3 Pos, Vec2 &Screen)
+bool FPSUtils::World2Screen(float Matrix[16], Vec3 Pos, Vec2& Screen)
 {
 	/// Matrix-Vector Product, Mutiply World Eye Coordinates by projection matrix = clipcoords
 	Vec4 ClipCords;

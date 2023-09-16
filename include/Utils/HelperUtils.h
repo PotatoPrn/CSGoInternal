@@ -21,6 +21,10 @@ namespace FPSUtils
 	Vec3 GetBonePos(uintptr_t Entity, int BoneID);
 
 	bool World2Screen(float Matrix[16], Vec3 Pos, Vec2 &Screen);
+
+	bool VerifyEntity(uintptr_t Entity);
+
+	bool SameTeamCheck(uintptr_t Entity);
 }
 
 /// Glow Related Stuff
