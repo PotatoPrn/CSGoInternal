@@ -24,6 +24,20 @@ void HackThread()
 	// Check if Player Entity is null, if not, continue
 	if (HackClass.PlayerEntity != NULL)
 	{
+
+		/// ESP
+		if (GetAsyncKeyState(VK_F5) & 1)
+		{
+			THacks.T_ESP =!THacks.T_ESP;
+		}
+
+		/// Recoil Control
+		if (GetAsyncKeyState(VK_F6) & 1)
+		{
+			THacks.T_RCS = !THacks.T_RCS;
+		}
+
+
 		/// Aimbot Hack Toggle
 		if (GetAsyncKeyState(VK_F7) & 1)
 		{
@@ -64,6 +78,16 @@ void HackThread()
 
 
 		/// Hack Function Loop
+		if (THacks.T_ESP)
+		{
+			ESP();
+		}
+
+		if (THacks.T_RCS)
+		{
+			//RCS();
+		}
+
 		if (THacks.T_TrigBot)
 		{
 			TriggerBot();
@@ -86,10 +110,12 @@ void HackThread()
 
 
 		/// Temporary UI
-		std::cout << "[F7] Aimbot Hack > " << THacks.T_AimBot << "\n";
-		std::cout << "[F8] Glow Hack > " << THacks.T_Glow << "\n";
-		std::cout << "[F9] Bhop Hack > " << THacks.T_BHop << "\n";
-		std::cout << "[F10] / [Shift] Triggerbot Hack > " << THacks.T_TrigBot << "\n";
+		DbgPrint([F5] ESP Hack > , THacks.T_ESP);
+		DbgPrint([F6] RCS Hack > , THacks.T_RCS);
+		DbgPrint([F7] Aimbot Hack > , THacks.T_AimBot);
+		DbgPrint([F8] Glow Hack > , THacks.T_Glow);
+		DbgPrint([F9] Bhop Hack > , THacks.T_BHop);
+		DbgPrint([F10] / [Shift] Triggerbot Hack > , THacks.T_TrigBot);
 
 	}
 	UI::ClearConsole();

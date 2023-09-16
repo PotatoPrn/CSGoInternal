@@ -18,7 +18,7 @@ extern LPDIRECT3DDEVICE9 pDevice;
 #include <Windows.h>
 
 // Offsets
-#include "Sdk/Offsets.h"
+#include "Sdk/VecStruct.h"
 #include "Sdk/OffsetHunter.h"
 
 // Local Headers
@@ -58,6 +58,13 @@ public:
 	bool T_TrigBot = false;
 	bool T_TrigBot2 = false;
 	bool T_AimBot = false;
+	bool T_ESP = false;
+	bool T_RCS = false;
+
+	void KillAll()
+	{
+		T_BHop = T_Glow = T_TrigBot = T_TrigBot2 = T_AimBot = T_ESP = T_RCS = 0;
+	}
 };
 
 extern EnabledHacks THacks;

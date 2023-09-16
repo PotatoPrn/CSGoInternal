@@ -3,9 +3,12 @@
 
 #include "main.h"
 
+#define DbgPrint(x, y) std::cout << #x << y << "\n"
+
 // Key State Definitions
 #define KEYDOWN -32768
 #define KEYUP 0
+
 
 void HackThread();
 

@@ -18,6 +18,8 @@ struct OffsetValues
 	uintptr_t m_fFlag;
 	uintptr_t m_dwBoneMatrix;
 	uintptr_t m_bIsDefusing;
+	uintptr_t m_iShotsFired;
+	uintptr_t m_aimPunchAngle;
 
 
 	uintptr_t dwForceJump;
@@ -27,6 +29,7 @@ struct OffsetValues
 	uintptr_t dwGlowObjectManager;
 	uintptr_t dwLocalPlayer;
 	uintptr_t dwForceAttack;
+	uintptr_t dwViewMatrix = 0x4DF1E74;
 
 	uintptr_t m_bDormant;
 	uintptr_t dwEntityList;
@@ -34,14 +37,17 @@ struct OffsetValues
 
 extern OffsetValues OffsetV;
 
-class EntClass
+namespace OH /// Offset Handler
 {
-public:
-	union
+	template<class OH>
+	OH CalcOffset(uintptr_t ModuleAddress, uintptr_t OffsetVal)
 	{
+		return *(OH*)(ModuleAddress + OffsetVal);
+	}
 
-	};
-};
+}
+
+
 
 
 

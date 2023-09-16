@@ -2,7 +2,7 @@
 #define CSGOINTERNAL_HELPERUTILS_H
 
 
-#include "Sdk/Offsets.h"
+#include "Sdk/VecStruct.h"
 #include <Windows.h>
 
 #define PI 3.14159265f
@@ -19,6 +19,8 @@ namespace FPSUtils
 	void CalculateAngle(Vec3 Angle);
 
 	Vec3 GetBonePos(uintptr_t Entity, int BoneID);
+
+	bool World2Screen(float Matrix[16], Vec3 Pos, Vec2 &Screen);
 }
 
 /// Glow Related Stuff

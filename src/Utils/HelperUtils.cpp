@@ -10,7 +10,7 @@
 /// FPS Helpers
 bool FPSUtils::IsPlayerMoving()
 {
-	Vec3 PlayerAcceleration = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecVelocity);
+	Vec3 PlayerAcceleration = OH::CalcOffset<Vec3>(HackClass.PlayerEntity, OffsetV.m_vecVelocity);
 	int TotalAcceleration = PlayerAcceleration.x + PlayerAcceleration.y + PlayerAcceleration.z;
 
 	if (TotalAcceleration != 0)
@@ -65,7 +65,7 @@ Vec3 FPSUtils::NormaliseViewAngle(Vec3 Angle)
 /// Get The bone Pos of an entity
 Vec3 FPSUtils::GetBonePos(uintptr_t Entity, int BoneID)
 {
-	uintptr_t BoneMatrix = *(uintptr_t*)(Entity + OffsetV.m_dwBoneMatrix);
+	uintptr_t BoneMatrix = OH::CalcOffset<uintptr_t>(Entity, OffsetV.m_dwBoneMatrix);
 	Vec3 BonePos;
 
 	BonePos.x = *(float*)(BoneMatrix + 0x30 * BoneID + 0x0c);
@@ -84,13 +84,13 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 
 	/// Grab the Player ViewAngle
 	// Alternative to using dmaaddy
-	uintptr_t ViewAngleAddress = *(uintptr_t*)(HackClass.EngineBase + OffsetV.dwClientState) + OffsetV.dwClientState_ViewAngles;
+	uintptr_t ViewAngleAddress = OH::CalcOffset<uintptr_t>(HackClass.EngineBase, OffsetV.dwClientState) + OffsetV.dwClientState_ViewAngles;
 
 
 	/// Get PLayer Position
-	Vec3 PlayerPos = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecOrigin);
+	Vec3 PlayerPos = OH::CalcOffset<Vec3>(HackClass.PlayerEntity, OffsetV.m_vecOrigin);
 
-	Vec3 ViewOffset = *(Vec3*)(HackClass.PlayerEntity + OffsetV.m_vecViewOffset);
+	Vec3 ViewOffset = OH::CalcOffset<Vec3>(HackClass.PlayerEntity, OffsetV.m_vecViewOffset);
 
 	Vec3 TruePlayerPos = (PlayerPos + ViewOffset);
 
@@ -107,10 +107,33 @@ void FPSUtils::CalculateAngle(Vec3 Target)
 	// Write New View Value
 	*(Vec3*)ViewAngleAddress = FPSUtils::NormaliseViewAngle(NewViewAngle);
 	// X = Pitch, Y = Yaw... bruh
-
 }
 
+/// World to screen Calculation
+bool FPSUtils::World2Screen(float Matrix[16], Vec3 Pos, Vec2 &Screen)
+{
+	/// Matrix-Vector Product, Mutiply World Eye Coordinates by projection matrix = clipcoords
+	Vec4 ClipCords;
+	ClipCords.x = Pos.x * Matrix[0] + Pos.y * Matrix[1] + Pos.z * Matrix[2] + Matrix[3];
+	ClipCords.y = Pos.x * Matrix[4] + Pos.y * Matrix[5] + Pos.z * Matrix[6] + Matrix[7];
+	ClipCords.z = Pos.x * Matrix[8] + Pos.y * Matrix[9] + Pos.z * Matrix[10] + Matrix[11];
+	ClipCords.w = Pos.x * Matrix[12] + Pos.y * Matrix[13] + Pos.z * Matrix[14] + Matrix[15];
 
+	if (ClipCords.w < 0.1f)
+	{
+		return false;
+	}
+
+	/// Perspective Division, Diving by Clip.W = Normalized Device Coordinates
+	Vec3 NDC;
+	NDC.x = ClipCords.x / ClipCords.w;
+	NDC.y = ClipCords.y / ClipCords.w;
+	NDC.z = ClipCords.z / ClipCords.w;
+
+	Screen.x = (WindowWidth / 2 * NDC.x) + (NDC.x + WindowWidth / 2);
+	Screen.y = -(WindowLength / 2 * NDC.y) + (NDC.y + WindowLength / 2);
+	return true;
+}
 
 /// Glow Hack Helpers
 void GlowUtils::SetTeamGlow(int GlowIndex, uintptr_t GlowObject)
@@ -144,7 +167,7 @@ void GlowUtils::SetEnemyGlow(uintptr_t Entity, int GlowIndex, uintptr_t GlowObje
 	}
 	else
 	{
-		int Health = *(uintptr_t*)(Entity + OffsetV.m_iHealth);
+		int Health = OH::CalcOffset<int>(Entity, OffsetV.m_iHealth);
 		TGlow.Red = Health * -0.01 + 1;
 		TGlow.Green = Health * 0.01;
 		TGlow.Blue = 0.0f;
@@ -170,7 +193,7 @@ void GlowUtils::ModifyBrightness()
 
 	float Brightness = 5.0f;
 
-	int AmbientVal = *(int*)(HackClass.EngineBase + OffsetV.model_ambient_min);
+	int AmbientVal = OH::CalcOffset<int>(HackClass.EngineBase, OffsetV.model_ambient_min);
 	int XorPointer = *(int*)&Brightness ^ AmbientVal;
 
 	*(uintptr_t*)(HackClass.EngineBase + OffsetV.model_ambient_min) = XorPointer;

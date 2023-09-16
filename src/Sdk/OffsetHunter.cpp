@@ -46,8 +46,8 @@ bool LocateOffsets()
 	OffsetV.m_iGlowIndex = GetNetVarOffset("DT_CSPlayer", "m_flFlashDuration", clientclass, 24);
 
 	OffsetV.m_clrRender = GetNetVarOffset("DT_BaseEntity", "m_clrRender", clientclass,0);
-
-
+	OffsetV.m_iShotsFired = GetNetVarOffset("DT_CSPlayer", "m_iShotsFired", clientclass, 0);
+	OffsetV.m_aimPunchAngle = GetNetVarOffset("DT_BasePlayer", "m_aimPunchAngle", clientclass, 0);
 
 
 	// DLL Pointers

@@ -11,4 +11,8 @@ void TriggerBot();
 
 void Aimbot();
 
+void ESP();
+
+void RCS();
+
 #endif //CSGOINTERNAL_HACKLIST_H

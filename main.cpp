@@ -65,14 +65,11 @@ void InitHack(HMODULE hModule)
 
 	// The entire dll will crash if all functions are still enabled...
 	// Adding a temporary functon clean up
-	THacks.T_AimBot = false;
-	THacks.T_BHop = false;
-	THacks.T_TrigBot = false;
-	THacks.T_TrigBot2 = false;
-	THacks.T_Glow = false;
+	THacks.KillAll();
 
 
 	// Patch Original Bytes when so the dll can eject without the game crashing
+	Sleep(10);
 	Hook::Patch((BYTE*)D3D9Device[42], EndSceneBytes, 7);
 
 	std::cout << "Ejecting" << std::endl;
