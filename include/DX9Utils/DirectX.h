@@ -8,7 +8,7 @@ typedef HRESULT(APIENTRY* tEndScene)(LPDIRECT3DDEVICE9 pDevice);
 
 static HWND Window;
 
-extern int WindowWidth, WindowLength;
+extern int WindowWidth, WindowHeight;
 
 BOOL CALLBACK EnumWind(HWND Handle, LPARAM lp);
 

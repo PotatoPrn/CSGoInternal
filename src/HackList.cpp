@@ -109,41 +109,16 @@ void Aimbot()
 	}
 }
 
+
+
 /// ESP Hack
 void ESP()
 {
-	/// The view matrix is found by punching in the view angle into a 3d rotation converter then scanning it and looking for all matrixs
-	/// https://guidedhacking.com/threads/how-to-get-started-with-learning-viewmatrix.13663/
-	float ViewMatrix[16];
-	memcpy(&ViewMatrix, (PBYTE)(HackClass.ClientBase + OffsetV.dwViewMatrix), sizeof(ViewMatrix));
+	ESPHacks::DrawCrossHair();
 
-	// 1 to skip the player
-	for (unsigned int i = 1; i < 64; i++)
-	{
-		uintptr_t Entity = *(uintptr_t*)(HackClass.ClientBase + OffsetV.dwEntityList + i * 0x10);
+	ESPHacks::DrawSnapLine();
 
-		if (FPSUtils::VerifyEntity(Entity))
-		{
 
-			D3DCOLOR Color;
-			if (!FPSUtils::SameTeamCheck(Entity))
-			{
-				Color = D3DCOLOR_ARGB(255, 255, 0, 0);
-			}
-			else
-			{
-				Color = D3DCOLOR_ARGB(255, 0, 255, 0);
-			}
-
-			Vec2 EntPos2D;
-			Vec3 EntityPos = OH::CalcOffset<Vec3>(Entity, OffsetV.m_vecOrigin);
-
-			if (FPSUtils::World2Screen(ViewMatrix, EntityPos, EntPos2D))
-			{
-				DrawLine(EntPos2D.x, EntPos2D.y, WindowWidth / 2, WindowLength / 2, 2, Color);
-			}
-		}
-	}
 }
 
 /// RCS Hack

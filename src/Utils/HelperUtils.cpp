@@ -164,7 +164,7 @@ bool FPSUtils::World2Screen(float Matrix[16], Vec3 Pos, Vec2& Screen)
 	NDC.z = ClipCords.z / ClipCords.w;
 
 	Screen.x = (WindowWidth / 2 * NDC.x) + (NDC.x + WindowWidth / 2);
-	Screen.y = -(WindowLength / 2 * NDC.y) + (NDC.y + WindowLength / 2);
+	Screen.y = -(WindowHeight / 2 * NDC.y) + (NDC.y + WindowHeight / 2);
 	return true;
 }
 

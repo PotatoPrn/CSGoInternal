@@ -1,6 +1,9 @@
 #ifndef INTTEMPLATE_MAIN_H
 #define INTTEMPLATE_MAIN_H
 
+#define ABS(x) ((x) < 0 ? (-x) : (x))
+
+
 // Standard C++ Headers
 #include <iostream>
 #include <vector>

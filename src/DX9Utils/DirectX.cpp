@@ -6,7 +6,7 @@
 
 // This list of function is to setup Directx9, grab the vtable offset for endscene (42), and then hook it
 
-int WindowWidth, WindowLength;
+int WindowWidth, WindowHeight;
 
 BOOL CALLBACK EnumWind(HWND Handle, LPARAM lp)
 {
@@ -37,7 +37,12 @@ HWND GetDeviceWindow()
 	RECT Size;
 	GetWindowRect(Window, &Size);
 	WindowWidth = Size.right - Size.left;
-	WindowLength = Size.bottom - Size.top;
+	WindowHeight = Size.bottom - Size.top;
+
+	WindowWidth -= 5;
+	WindowHeight -= 27;
+
+
 
 	return Window;
 }
@@ -63,7 +68,7 @@ bool InitD3D9(void** pTable, size_t Size)
 	d3dpp.Windowed = false;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.hDeviceWindow = GetDeviceWindow(); // Unable to retrieve the hDeviceWindow...
-	//std::cout << WindowWidth << std::endl << WindowLength << std::endl;
+	//std::cout << WindowWidth << std::endl << WindowHeight << std::endl;
 
 	// Create Device Class with the information retrieved previously
 	HRESULT DummyDevCreated = PD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow,
