@@ -4,7 +4,6 @@
 #include "HackList.h"
 #include "Utils/HelperUtils.h"
 #include "main.h"
-#include "DX9Utils/Draw.h"
 
 void BHop_Hack()
 {

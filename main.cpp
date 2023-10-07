@@ -1,6 +1,7 @@
 #include "main.h"
 
 
+
 // Declared Structs
 GameHack HackClass;
 EnabledHacks THacks;
@@ -21,10 +22,15 @@ tEndScene oEndScene = nullptr;
 // Hook Function
 void APIENTRY hkEndScene(LPDIRECT3DDEVICE9 o_pDevice)
 {
+
 	if (!pDevice)
 	{
 		pDevice = o_pDevice;
 	}
+
+	DrawTextF("On :D", WindowWidth / 2, WindowHeight - 20, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	DrawMenu();
 
 	HackThread();
 
@@ -36,11 +42,6 @@ void APIENTRY hkEndScene(LPDIRECT3DDEVICE9 o_pDevice)
 void InitHack(HMODULE hModule)
 {
 
-	// Setup Output Console
-
-	AllocConsole();
-	FILE* fHandle;
-	freopen_s(&fHandle, "CONOUT$", "w", stdout);
 
 
 	// Setup Graphics Hooking function...
@@ -63,20 +64,18 @@ void InitHack(HMODULE hModule)
 		Sleep(1);
 	}
 
-	// The entire dll will crash if all functions are still enabled...
-	// Adding a temporary functon clean up
-	THacks.KillAll();
-
-
 	// Patch Original Bytes when so the dll can eject without the game crashing
-	Sleep(10);
 	Hook::Patch((BYTE*)D3D9Device[42], EndSceneBytes, 7);
 
-	std::cout << "Ejecting" << std::endl;
+	// Release the graphics Drawing stuff so no memory leaks
+	HackClass.FontF->Release();
+	HackClass.LineL->Release();
 
-	// Eject DLL
-	fclose(fHandle);
-	FreeConsole();
+
+	/// This sleep is essential when ejecting as it prevents actions from occuring while ejecting which causes the game to crash
+	Sleep(1000);
+
+
 	FreeLibraryAndExitThread(hModule, 0);
 }
 

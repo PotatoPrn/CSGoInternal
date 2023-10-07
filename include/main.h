@@ -17,6 +17,8 @@
 
 extern LPDIRECT3DDEVICE9 pDevice;
 
+
+
 // Windows Headers
 #include <Windows.h>
 
@@ -48,6 +50,8 @@ public:
 	uintptr_t EngineBase;
 	uintptr_t PlayerEntity;
 
+	ID3DXFont* FontF;
+	ID3DXLine* LineL;
 };
 
 extern GameHack HackClass;
@@ -56,6 +60,7 @@ extern GameHack HackClass;
 struct EnabledHacks
 {
 public:
+	bool T_ShowMenu = false;
 	bool T_BHop = false;
 	bool T_Glow = false;
 	bool T_TrigBot = false;
@@ -63,11 +68,6 @@ public:
 	bool T_AimBot = false;
 	bool T_ESP = false;
 	bool T_RCS = false;
-
-	void KillAll()
-	{
-		T_BHop = T_Glow = T_TrigBot = T_TrigBot2 = T_AimBot = T_ESP = T_RCS = 0;
-	}
 };
 
 extern EnabledHacks THacks;

@@ -8,6 +8,9 @@ void DrawFilledRect(int x, int y, int w, int h, D3DCOLOR color);
 void DrawLine(int x1, int y1, int x2, int y2, int thickness, D3DCOLOR Color);
 void DrawLine(Vec2 Src, Vec2 Dst, int Thickness, D3DCOLOR Color);
 
+void DrawTextF(const char* Text, float x, float y, D3DCOLOR Color);
+
+void DrawMenu();
 
 namespace ESPHacks
 {

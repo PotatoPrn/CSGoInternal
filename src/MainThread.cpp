@@ -3,7 +3,7 @@
 
 #include "MainThread.h"
 #include "Utils/HelperUtils.h"
-
+#include "DX9Utils/Draw.h"
 
 
 void HackThread()
@@ -25,10 +25,17 @@ void HackThread()
 	if (HackClass.PlayerEntity != NULL)
 	{
 
+		/// Open Hack Menu
+		if (GetAsyncKeyState(VK_F1) & 1)
+		{
+			THacks.T_ShowMenu = !THacks.T_ShowMenu;
+		}
+
+
 		/// ESP
 		if (GetAsyncKeyState(VK_F5) & 1)
 		{
-			THacks.T_ESP =!THacks.T_ESP;
+			THacks.T_ESP = !THacks.T_ESP;
 		}
 
 		/// Recoil Control
@@ -107,18 +114,7 @@ void HackThread()
 		{
 			Aimbot();
 		}
-
-
-		/// Temporary UI
-		DbgPrint([F5] ESP Hack > , THacks.T_ESP);
-		DbgPrint([F6] RCS Hack > , THacks.T_RCS);
-		DbgPrint([F7] Aimbot Hack > , THacks.T_AimBot);
-		DbgPrint([F8] Glow Hack > , THacks.T_Glow);
-		DbgPrint([F9] Bhop Hack > , THacks.T_BHop);
-		DbgPrint([F10] / [Shift] Triggerbot Hack > , THacks.T_TrigBot);
-
 	}
-	UI::ClearConsole();
 }
 
 #endif //CSGOINTERNAL_MAINTHREAD_CPP
