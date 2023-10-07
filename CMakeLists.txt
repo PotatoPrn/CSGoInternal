@@ -38,8 +38,6 @@ add_library(${PROJECT_NAME} SHARED
         src/HackList.cpp
         src/MainThread.cpp
 
-        src/GuiLib.cpp
-
 
         ${Imgui}
         ${SDK}
